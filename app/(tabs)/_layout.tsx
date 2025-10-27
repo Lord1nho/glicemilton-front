@@ -1,35 +1,58 @@
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
-  );
+    return (
+        <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+            <Tabs.Screen
+                name="desafiomerenda"
+                options={{
+                    title: 'Desafio',
+                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="trophy" color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="corridaenergia"
+                options={{
+                    title: 'Energia',
+                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="battery-half" color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="radaracucar"
+                options={{
+                    title: 'Radar',
+                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="heart-o" color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="superpo"
+                options={{
+                    title: 'SuperPó',
+                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="medkit" color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="escudo"
+                options={{
+                    title: 'Escudo',
+                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="shield" color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="missao"
+                options={{
+                    title: 'Missão',
+                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="cog" color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="diario"
+                options={{
+                    title: 'Diário',
+                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="calendar-check-o" color={color} />,
+                }}
+            />
+        </Tabs>
+    );
 }
