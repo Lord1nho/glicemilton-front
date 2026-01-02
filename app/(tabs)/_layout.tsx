@@ -1,56 +1,61 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function TabLayout() {
+export default function TabsLayout() {
     return (
-        <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+        <Tabs
+            screenOptions={{
+                headerShown: true,
+                tabBarActiveTintColor: '#2563eb',
+            }}
+        >
             <Tabs.Screen
-                name="desafiomerenda"
+                name="home"
                 options={{
-                    title: 'Desafio',
-                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="trophy" color={color} />,
+                    title: 'Teste',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="home" size={size} color={color} />
+                    ),
                 }}
             />
+
             <Tabs.Screen
-                name="corridaenergia"
+                name="glicemia"
                 options={{
-                    title: 'Energia',
-                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="battery-half" color={color} />,
+                    title: 'Glicemia',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="water" size={size} color={color} />
+                    ),
                 }}
             />
+
             <Tabs.Screen
-                name="radaracucar"
+                name="medicacao"
                 options={{
-                    title: 'Radar',
-                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="heart-o" color={color} />,
+                    title: 'Medicação',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="medkit" size={size} color={color} />
+                    ),
                 }}
             />
+
             <Tabs.Screen
-                name="superpo"
+                name="desafios"
                 options={{
-                    title: 'SuperPó',
-                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="medkit" color={color} />,
+                    title: 'Desafios',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="trophy" size={size} color={color} />
+                    ),
                 }}
             />
+
             <Tabs.Screen
-                name="escudo"
+                name="perfil"
                 options={{
-                    title: 'Escudo',
-                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="shield" color={color} />,
-                }}
-            />
-            <Tabs.Screen
-                name="missao"
-                options={{
-                    title: 'Missão',
-                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="cog" color={color} />,
-                }}
-            />
-            <Tabs.Screen
-                name="diario"
-                options={{
-                    title: 'Diário',
-                    tabBarIcon: ({ color }) => <FontAwesome size={20} name="calendar-check-o" color={color} />,
+                    title: 'Perfil',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="person" size={size} color={color} />
+                    ),
                 }}
             />
         </Tabs>
