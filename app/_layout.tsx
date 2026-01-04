@@ -1,12 +1,14 @@
-import { Stack } from "expo-router";
-import React from "react";
+import { Stack } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function RootLayout() {
-  return (
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-  )
+    return (
+        <LinearGradient colors={['blue', 'red']} style={{ flex: 1 }}>
+            <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+        </LinearGradient>
+    );
 }
 
 /*

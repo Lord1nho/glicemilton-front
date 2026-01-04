@@ -3,16 +3,18 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function TabsLayout() {
     return (
+
         <Tabs
             screenOptions={{
                 headerShown: true,
                 tabBarActiveTintColor: '#2563eb',
+                headerTitleAlign: 'center',
             }}
         >
             <Tabs.Screen
-                name="home"
+                name="DesafioMerenda"
                 options={{
-                    title: 'Teste',
+                    title: "Desafio da Merenda",
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="home" size={size} color={color} />
                     ),
@@ -20,9 +22,9 @@ export default function TabsLayout() {
             />
 
             <Tabs.Screen
-                name="glicemia"
+                name="CorridaEnergia"
                 options={{
-                    title: 'Glicemia',
+                    title: 'Corrida da Energia',
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="water" size={size} color={color} />
                     ),
@@ -30,9 +32,9 @@ export default function TabsLayout() {
             />
 
             <Tabs.Screen
-                name="medicacao"
+                name="RadarAcucar"
                 options={{
-                    title: 'Medicação',
+                    title: 'Radar do Açúcar',
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="medkit" size={size} color={color} />
                     ),
@@ -40,9 +42,9 @@ export default function TabsLayout() {
             />
 
             <Tabs.Screen
-                name="desafios"
+                name="SuperPo"
                 options={{
-                    title: 'Desafios',
+                    title: 'Hora do SuperPó',
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="trophy" size={size} color={color} />
                     ),
@@ -50,9 +52,29 @@ export default function TabsLayout() {
             />
 
             <Tabs.Screen
-                name="perfil"
+                name="EscudoProtetor"
                 options={{
-                    title: 'Perfil',
+                    title: 'Escudo Protetor',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="person" size={size} color={color} />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
+                name="MissaoGlicemilton"
+                options={{
+                    title: 'Missão SOS Glicemilton',
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="person" size={size} color={color} />
+                    ),
+                }}
+            />
+
+            <Tabs.Screen
+                name="DiarioFormiga"
+                options={{
+                    title: 'Diário da Formiga Sábia',
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="person" size={size} color={color} />
                     ),
