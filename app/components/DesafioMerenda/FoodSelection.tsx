@@ -1,6 +1,10 @@
 import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Screen from "@/app/components/Screen";
+import {useCallback, useEffect, useState} from "react";
+import {useFocusEffect} from "expo-router";
+import Toast from "react-native-toast-message";
+import stylesPoints from "@/app/(tabs)/DesafioMerenda/styles";
 
 type HintCardProps = {
     text: string;
@@ -30,14 +34,14 @@ export const foodsMock: Food[] = [
     {
         id: 3,
         nome: 'Banana',
-        isHealthy: false,
+        isHealthy: true,
         imageUrl: 'https://example.com/refrigerante.png',
     },
 
     {
         id: 4,
         nome: 'Suco natural',
-        isHealthy: false,
+        isHealthy: true,
         imageUrl: 'https://example.com/refrigerante.png',
     },
     {
@@ -56,32 +60,121 @@ export const foodsMock: Food[] = [
 
 
 
+
 export default function FoodSelection() {
+    const [selected, setSelected] = useState<Food[]>([])
+    const [confirmed, setConfirmed] = useState(false);
+    const [pontos, setPontos] = useState(0);
+
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                console.log("Saiu da tela, limpando seleção");
+                setSelected([]);
+                setConfirmed(false);
+            };
+        }, [])
+    );
+
+    useEffect(() => {
+        console.log("Selecionados:", selected);
+    }, [selected]);
+
+    //Função para seleção dos itens + suporte no css
+    function handleSelect(food: Food) {
+        setSelected((prev) => {
+            const alreadySelected = prev.some(item => item.id === food.id);
+
+            if (alreadySelected) {
+                // remove
+                return prev.filter(item => item.id !== food.id);
+            }
+
+            // adiciona
+            return [...prev, food];
+        });
+    }
+
+    function submitChoice(){
+        const total = selected.length
+
+        const corretos = selected.filter(food => food.isHealthy).length;
+        const ptsCorretos = corretos * 15;
+        const ptsErrados = ((total - corretos) * 5);
+
+        const ptsTotalPergunta = ptsCorretos - ptsErrados;
+        setPontos(prev => Math.max(0, prev + ptsTotalPergunta));
+
+        console.log(`Pontuação = ${ptsTotalPergunta}`)
+        if (corretos === total) {
+            Toast.show({
+                type: "success",
+                text1: `Glicemilton está muito feliz!`,
+                text2: `+${ptsTotalPergunta} pontos!`,
+            });
+        } else if (ptsTotalPergunta >= 0) {
+            Toast.show({
+                type: "success",
+                text1: `Boas escolhas, mas pode melhorar! +${ptsTotalPergunta}`,
+                text2: `+${ptsTotalPergunta} pontos!`
+            });
+        } else {
+            Toast.show({
+                type: "error",
+                text1: `Tente novamente!`,
+                text2: `Glicemilton prefere alimentos saudáveis!`
+            });
+        }
+
+        setConfirmed(true);
+    }
+
+
     return (
         <Screen>
+            <View style={stylesPoints.scoreBox}>
+                <Text>Pontos: {pontos}</Text>
+                <Text>Pergunta 1 de 5</Text>
+            </View>
             <View style={styles.container}>
-                {foodsMock.map(food => (
+                {foodsMock.map(food => {
+                    const isSelected = selected.some(item => item.id === food.id);
+                 return (
                     <TouchableOpacity
                         key={food.id}
-                        style={styles.card}
+                        style={[styles.card,
+                            isSelected && styles.foodSelected
+                        ]}
                         activeOpacity={0.8}
+                        disabled={confirmed}
                         onPress={() => {
-                            !food.isHealthy
-                                ? alert('❌ Alimento não saudável')
-                                : alert('✅ Alimento saudável');
+                            handleSelect(food)
                         }}
                     >
                         <Text style={styles.emoji}>🍎</Text>
                         <Text style={styles.cardText}>{food.nome}</Text>
                     </TouchableOpacity>
-                ))}
+                    )}
+                )}
                 <View style={styles.buttonWrapper}>
                     <TouchableOpacity
-                        style={styles.customButton}
-                        onPress={() => console.log('teste')}
+                        style={[
+                            styles.customButton,
+                            selected.length === 0 && !confirmed && styles.buttonDisabled
+                        ]}
+                        disabled={selected.length === 0 && !confirmed}
+                        onPress={() => {
+                            if (!confirmed) {
+                                submitChoice();
+                            } else {
+                                console.log("Próxima pergunta");
+                                setSelected([]);
+                                setConfirmed(false);
+                            }
+                        }}
                     >
                         <Text style={styles.buttonText}>
-                            Próxima Pergunta
+                            {confirmed ? "Próxima pergunta" : "Confirmar escolha"}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -145,10 +238,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
+    buttonDisabled: {
+        backgroundColor: "#ccc",
+    },
+
     buttonText: {
         color: '#fff',
         fontWeight: 'bold',
         paddingHorizontal: 20
+    },
+
+    foodSelected: {
+        borderColor: "#FFD600", // 🟡 borda amarela
+        borderWidth: 2,         // destaque
     },
 
 });

@@ -1,13 +1,17 @@
-import { Stack } from 'expo-router';
+import { Stack, Slot } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import Toast from "react-native-toast-message";
 
 export default function RootLayout() {
     return (
+        <>
         <LinearGradient colors={['blue', 'red']} style={{ flex: 1 }}>
             <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack>
         </LinearGradient>
+            <Toast />
+        </>
     );
 }
 
