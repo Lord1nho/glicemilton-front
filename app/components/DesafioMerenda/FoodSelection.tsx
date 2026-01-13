@@ -6,11 +6,6 @@ import {useFocusEffect} from "expo-router";
 import Toast from "react-native-toast-message";
 import stylesPoints from "@/app/(tabs)/DesafioMerenda/styles";
 
-type HintCardProps = {
-    text: string;
-};
-
-
 type Food = {
     id: number;
     nome: string;
@@ -252,5 +247,4 @@ const styles = StyleSheet.create({
         borderColor: "#FFD600", // 🟡 borda amarela
         borderWidth: 2,         // destaque
     },
-
 });
