@@ -4,10 +4,10 @@ import Screen from "@/app/components/Screen";
 import {useCallback, useEffect, useState} from "react";
 import {useFocusEffect} from "expo-router";
 import Toast from "react-native-toast-message";
-import stylesPoints from "@/app/(tabs)/DesafioMerenda/styles";
+import {getFoods} from "@/lib/services/desafioMerendaService";
 
-type Food = {
-    id: number;
+export type Food = {
+    id_alimento: number;
     nome: string;
     isHealthy: boolean;
     imageUrl: string;
@@ -15,38 +15,38 @@ type Food = {
 
 export const foodsMock: Food[] = [
     {
-        id: 1,
+        id_alimento: 1,
         nome: 'Maçã',
         isHealthy: true,
         imageUrl: 'https://example.com/maca.png',
     },
     {
-        id: 2,
+        id_alimento: 2,
         nome: 'Refrigerante',
         isHealthy: false,
         imageUrl: 'https://example.com/refrigerante.png',
     },
     {
-        id: 3,
+        id_alimento: 3,
         nome: 'Banana',
         isHealthy: true,
         imageUrl: 'https://example.com/refrigerante.png',
     },
 
     {
-        id: 4,
+        id_alimento: 4,
         nome: 'Suco natural',
         isHealthy: true,
         imageUrl: 'https://example.com/refrigerante.png',
     },
     {
-        id: 5,
+        id_alimento: 5,
         nome: 'Brigadeiro',
         isHealthy: false,
         imageUrl: 'https://example.com/refrigerante.png',
     },
     {
-        id: 6,
+        id_alimento: 6,
         nome: 'Pão',
         isHealthy: false,
         imageUrl: 'https://example.com/refrigerante.png',
@@ -57,6 +57,8 @@ export const foodsMock: Food[] = [
 
 
 export default function FoodSelection() {
+    const [foods, setFoods] = useState<Food[]>([]);
+    const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState<Food[]>([])
     const [confirmed, setConfirmed] = useState(false);
     const [pontos, setPontos] = useState(0);
@@ -71,6 +73,23 @@ export default function FoodSelection() {
         }, [])
     );
 
+    async function loadFoods() {
+        try {
+            const data:Food[] = await getFoods();
+            setFoods(data);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadFoods();
+    }, []);
+
+    console.log(foods);
+
     useEffect(() => {
         console.log("Selecionados:", selected);
     }, [selected]);
@@ -78,11 +97,11 @@ export default function FoodSelection() {
     //Função para seleção dos itens + suporte no css
     function handleSelect(food: Food) {
         setSelected((prev) => {
-            const alreadySelected = prev.some(item => item.id === food.id);
+            const alreadySelected = prev.some(item => item.id_alimento === food.id_alimento);
 
             if (alreadySelected) {
                 // remove
-                return prev.filter(item => item.id !== food.id);
+                return prev.filter(item => item.id_alimento !== food.id_alimento);
             }
 
             // adiciona
@@ -92,8 +111,7 @@ export default function FoodSelection() {
 
     function submitChoice(){
         const total = selected.length
-
-        const corretos = selected.filter(food => food.isHealthy).length;
+        const corretos = selected.filter(foods => foods.isHealthy).length;
         const ptsCorretos = corretos * 15;
         const ptsErrados = ((total - corretos) * 5);
 
@@ -127,16 +145,16 @@ export default function FoodSelection() {
 
     return (
         <Screen>
-            <View style={stylesPoints.scoreBox}>
-                <Text>Pontos: {pontos}</Text>
-                <Text>Pergunta 1 de 5</Text>
+            <View style={styles.scoreBox}>
+                <Text style={styles.scoreText}>🏆 Pontos: 0</Text>
+                <Text style={styles.questionText}>Pergunta 1 de 5</Text>
             </View>
             <View style={styles.container}>
-                {foodsMock.map(food => {
-                    const isSelected = selected.some(item => item.id === food.id);
+                {foods.map(food => {
+                    const isSelected = selected.some(item => item.id_alimento === food.id_alimento);
                  return (
                     <TouchableOpacity
-                        key={food.id}
+                        key={food.id_alimento}
                         style={[styles.card,
                             isSelected && styles.foodSelected
                         ]}
@@ -165,6 +183,7 @@ export default function FoodSelection() {
                                 console.log("Próxima pergunta");
                                 setSelected([]);
                                 setConfirmed(false);
+                                loadFoods(); // 👈 AQUI
                             }
                         }}
                     >
@@ -184,6 +203,41 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginTop: 20,
+    },
+
+    scoreBox : {
+        marginTop: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+
+        backgroundColor: '#ffffff',
+        borderRadius: 16,
+
+        paddingVertical: 14,
+        paddingHorizontal: 16,
+
+        // sombra suave
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        elevation: 3,
+
+        // borda clara (dá esse efeito "card flutuando")
+        borderWidth: 1,
+        borderColor: '#e0f2fe',
+    },
+
+    scoreText: {
+        fontSize: 16,
+        fontWeight: "600",
+    },
+
+    questionText: {
+        fontSize: 14,
+        color: "#2F6FED",
+        fontWeight: "500",
     },
 
     card: {
