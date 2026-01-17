@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { BarChart2, Heart } from "lucide-react-native";
 
-export default function DiarioScreen() {
+export default function DiarioFormiga() {
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
 
@@ -62,9 +62,9 @@ export default function DiarioScreen() {
                 <Text style={styles.tipIcon}>✨</Text>
                 <Text style={styles.tipTitle}>Dica da Formiga Sábia</Text>
                 <Text style={styles.tipText}>
-                    "Registrar suas emoções ajuda a entender padrões e cuidar melhor da sua
+                    &#34;Registrar suas emoções ajuda a entender padrões e cuidar melhor da sua
                     saúde mental e física. Lembre-se: seus sentimentos são válidos e
-                    Glicemilton está sempre aqui para apoiar você!"
+                    Glicemilton está sempre aqui para apoiar você!&#34;
                 </Text>
             </View>
         </ScrollView>

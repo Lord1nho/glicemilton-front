@@ -5,8 +5,7 @@ import globals from "@/app/globals";
 import FoodSelection from "@/app/components/DesafioMerenda/FoodSelection";
 
 
-export default function Index() {
-
+export default function DesafioMerenda() {
 
     return (
     <Screen>

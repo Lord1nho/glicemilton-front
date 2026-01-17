@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { BookOpen, Backpack, PartyPopper, AlertCircle } from "lucide-react-native";
 
-export default function MissoesScreen() {
+export default function MissaoGlicemilton() {
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
 

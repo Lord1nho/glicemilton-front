@@ -41,7 +41,7 @@ const messagesGlicemia: message[] = [
     },
 ]
 
-export default function RadarAcucarScreen() {
+export default function RadarAcucar() {
 
 
     return (

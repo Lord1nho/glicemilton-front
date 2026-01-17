@@ -1,7 +1,29 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { User, Lock } from "lucide-react-native";
+import {useRouter} from "expo-router";
+import {supabase} from "@/lib/supabase";
+import {useState} from "react";
 
 export default function Login() {
+    const router = useRouter();
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    async function handleLogin(email: string, password: string) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (error) {
+            alert(error.message);
+            return;
+        }
+
+        // Login deu certo
+        router.push('/(tabs)/DesafioMerenda');
+    }
+
     return (
         <View style={styles.container}>
 
@@ -22,6 +44,7 @@ export default function Login() {
                     <TextInput
                         placeholder="E-mail"
                         placeholderTextColor="#94a3b8"
+                        onChangeText={setEmail}
                         style={styles.input}
                         keyboardType="email-address"
                         autoCapitalize="none"
@@ -33,6 +56,7 @@ export default function Login() {
                     <Lock color="#64748b" size={20} />
                     <TextInput
                         placeholder="Senha"
+                        onChangeText={setPassword}
                         placeholderTextColor="#94a3b8"
                         style={styles.input}
                         secureTextEntry
@@ -45,7 +69,7 @@ export default function Login() {
                 </TouchableOpacity>
 
                 {/* BOTÃO LOGIN */}
-                <TouchableOpacity style={styles.loginButton}>
+                <TouchableOpacity style={styles.loginButton}  onPress={() => handleLogin(email, password)}>
                     <Text style={styles.loginButtonText}>Entrar</Text>
                 </TouchableOpacity>
 
@@ -53,7 +77,7 @@ export default function Login() {
                 <Text style={styles.orText}>ou</Text>
 
                 {/* CADASTRO */}
-                <TouchableOpacity style={styles.registerButton}>
+                <TouchableOpacity style={styles.registerButton} onPress={() => router.push('/(auth)/Register')}>
                     <Text style={styles.registerButtonText}>
                         Criar uma conta
                     </Text>

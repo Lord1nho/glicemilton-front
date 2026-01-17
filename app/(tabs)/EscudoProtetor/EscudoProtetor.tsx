@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Shield, Droplet, Footprints, Heart, Sun, Eye, Lock } from "lucide-react-native";
 import Screen from "@/app/components/Screen";
 
-export default function EscudoProtetorScreen() {
+export default function EscudoProtetor() {
     return (
         <Screen>
             <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>

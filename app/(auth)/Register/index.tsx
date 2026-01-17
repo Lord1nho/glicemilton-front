@@ -1,7 +1,10 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { User, Lock } from "lucide-react-native";
+import {router, useRouter} from "expo-router";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
+
+    const router = useRouter();
     return (
         <View style={styles.container}>
 
@@ -15,6 +18,16 @@ export default function LoginScreen() {
 
             {/* CARD LOGIN */}
             <View style={styles.card}>
+
+                <View style={styles.inputWrapper}>
+                    <User color="#64748b" size={20} />
+                    <TextInput
+                        placeholder="Nome"
+                        placeholderTextColor="#94a3b8"
+                        style={styles.input}
+                        autoCapitalize="none"
+                    />
+                </View>
 
                 {/* EMAIL */}
                 <View style={styles.inputWrapper}>
@@ -39,23 +52,18 @@ export default function LoginScreen() {
                     />
                 </View>
 
-                {/* ESQUECI A SENHA */}
-                <TouchableOpacity>
-                    <Text style={styles.forgotText}>Esqueci minha senha</Text>
-                </TouchableOpacity>
-
                 {/* BOTÃO LOGIN */}
                 <TouchableOpacity style={styles.loginButton}>
-                    <Text style={styles.loginButtonText}>Entrar</Text>
+                    <Text style={styles.loginButtonText}>Cadastrar</Text>
                 </TouchableOpacity>
 
                 {/* DIVISOR */}
                 <Text style={styles.orText}>ou</Text>
 
-                {/* CADASTRO */}
-                <TouchableOpacity style={styles.registerButton}>
+                {/* Voltar */}
+                <TouchableOpacity style={styles.registerButton} onPress={() => router.back()}>
                     <Text style={styles.registerButtonText}>
-                        Criar uma conta
+                        Voltar
                     </Text>
                 </TouchableOpacity>
             </View>
