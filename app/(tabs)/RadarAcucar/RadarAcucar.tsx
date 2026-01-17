@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
     View,
     Text,
@@ -10,6 +10,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import Screen from "@/app/components/Screen";
+import {supabase} from "@/lib/supabase";
 
 type message = {
     id: number;
@@ -43,6 +44,32 @@ const messagesGlicemia: message[] = [
 
 export default function RadarAcucar() {
 
+    const [usuarioId, setUsuarioId] = useState<number | null>(null);
+
+    useEffect(() => {
+        async function init() {
+            // 1️⃣ carrega usuário
+            const { data: sessionData } = await supabase.auth.getSession();
+
+            if (sessionData.session) {
+                const authId = sessionData.session.user.id;
+
+                const { data, error } = await supabase
+                    .from('usuarios')
+                    .select('id_usuario')
+                    .eq('auth_id', authId)
+                    .single();
+
+                if (error) {
+                    console.log('Erro ao buscar usuarioId:', error);
+                } else {
+                    setUsuarioId(data.id_usuario); // 👈 aqui nasce o usuarioId
+                }
+            }
+        }
+
+        init();
+    }, []);
 
     return (
         <Screen>

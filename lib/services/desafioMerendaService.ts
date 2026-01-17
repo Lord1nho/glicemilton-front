@@ -43,3 +43,51 @@ export function shuffleArray<T>(array: T[]): T[] {
         .sort((a, b) => a.sort - b.sort)
         .map(({ item }) => item);
 }
+
+
+export async function salvarSelecoes(
+    usuarioId: number,
+    idResultado: number,
+    selected: Food[]
+) {
+    const selecoes = selected.map(food => ({
+        id_usuario: usuarioId,
+        id_resultado: idResultado,
+        id_alimento: food.id_alimento,
+        acertou: food.isHealthy,
+    }));
+
+    const { error } = await supabase
+        .from('selecao_alimento')
+        .insert(selecoes);
+
+    if (error) {
+        console.log('Erro ao salvar seleções:', error);
+    }
+}
+
+
+export async function salvarResultadoPergunta(
+    usuarioId: number,
+    pontos: number,
+    total: number,
+    corretos: number
+) {
+    const { data, error } = await supabase
+        .from('resultado_pergunta')
+        .insert({
+            id_usuario: usuarioId,
+            pontos,
+            total_selecionados: total,
+            total_corretos: corretos,
+        })
+        .select()
+        .single();
+
+    if (error) {
+        console.log('Erro ao salvar resultado:', error);
+        return null;
+    }
+
+    return data.id_resultado;
+}

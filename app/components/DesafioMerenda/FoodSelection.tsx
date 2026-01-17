@@ -1,10 +1,11 @@
-import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Screen from "@/app/components/Screen";
 import {useCallback, useEffect, useState} from "react";
 import {useFocusEffect} from "expo-router";
 import Toast from "react-native-toast-message";
-import {getFoods} from "@/lib/services/desafioMerendaService";
+import {getFoods, salvarResultadoPergunta, salvarSelecoes} from "@/lib/services/desafioMerendaService";
+import {supabase} from "@/lib/supabase";
+import {Loading} from "@/app/components/Loading";
 
 export type Food = {
     id_alimento: number;
@@ -55,13 +56,16 @@ export const foodsMock: Food[] = [
 
 
 
-
 export default function FoodSelection() {
     const [foods, setFoods] = useState<Food[]>([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState<Food[]>([])
     const [confirmed, setConfirmed] = useState(false);
     const [pontos, setPontos] = useState(0);
+    const [usuarioId, setUsuarioId] = useState<number | null>(null);
+
+
+
 
     useFocusEffect(
         useCallback(() => {
@@ -85,7 +89,31 @@ export default function FoodSelection() {
     }
 
     useEffect(() => {
-        loadFoods();
+        async function init() {
+            // 1️⃣ carrega usuário
+            const { data: sessionData } = await supabase.auth.getSession();
+
+            if (sessionData.session) {
+                const authId = sessionData.session.user.id;
+
+                const { data, error } = await supabase
+                    .from('usuarios')
+                    .select('id_usuario')
+                    .eq('auth_id', authId)
+                    .single();
+
+                if (error) {
+                    console.log('Erro ao buscar usuarioId:', error);
+                } else {
+                    setUsuarioId(data.id_usuario); // 👈 aqui nasce o usuarioId
+                }
+            }
+
+            // 2️⃣ carrega alimentos
+            await loadFoods();
+        }
+
+        init();
     }, []);
 
     console.log(foods);
@@ -109,7 +137,11 @@ export default function FoodSelection() {
         });
     }
 
-    function submitChoice(){
+    async function submitChoice(){
+        if (!usuarioId) {
+            console.log('usuarioId ainda não carregado');
+            return;
+        }
         const total = selected.length
         const corretos = selected.filter(foods => foods.isHealthy).length;
         const ptsCorretos = corretos * 15;
@@ -117,6 +149,18 @@ export default function FoodSelection() {
 
         const ptsTotalPergunta = ptsCorretos - ptsErrados;
         setPontos(prev => Math.max(0, prev + ptsTotalPergunta));
+
+        const idResultado = await salvarResultadoPergunta(
+            usuarioId,
+            ptsTotalPergunta,
+            total,
+            corretos
+        );
+
+        if (!idResultado) return;
+
+
+        await salvarSelecoes(usuarioId, idResultado, selected);
 
         console.log(`Pontuação = ${ptsTotalPergunta}`)
         if (corretos === total) {
@@ -140,34 +184,42 @@ export default function FoodSelection() {
         }
 
         setConfirmed(true);
-    }
 
+    }
 
     return (
         <Screen>
             <View style={styles.scoreBox}>
-                <Text style={styles.scoreText}>🏆 Pontos: 0</Text>
+                <Text style={{ color: 'red', fontSize: 16 }}>
+                    TESTE
+                </Text>
                 <Text style={styles.questionText}>Pergunta 1 de 5</Text>
             </View>
             <View style={styles.container}>
-                {foods.map(food => {
-                    const isSelected = selected.some(item => item.id_alimento === food.id_alimento);
-                 return (
-                    <TouchableOpacity
-                        key={food.id_alimento}
-                        style={[styles.card,
-                            isSelected && styles.foodSelected
-                        ]}
-                        activeOpacity={0.8}
-                        disabled={confirmed}
-                        onPress={() => {
-                            handleSelect(food)
-                        }}
-                    >
-                        <Text style={styles.emoji}>🍎</Text>
-                        <Text style={styles.cardText}>{food.nome}</Text>
-                    </TouchableOpacity>
-                    )}
+                {loading ? (
+                    <Loading/>
+                ) : (
+                    foods.map(food => {
+                        const isSelected = selected.some(
+                            item => item.id_alimento === food.id_alimento
+                        );
+
+                        return (
+                            <TouchableOpacity
+                                key={food.id_alimento}
+                                style={[
+                                    styles.card,
+                                    isSelected && styles.foodSelected
+                                ]}
+                                activeOpacity={0.8}
+                                disabled={confirmed}
+                                onPress={() => handleSelect(food)}
+                            >
+                                <Text style={styles.emoji}>🍎</Text>
+                                <Text style={styles.cardText}>{food.nome}</Text>
+                            </TouchableOpacity>
+                        );
+                    })
                 )}
                 <View style={styles.buttonWrapper}>
                     <TouchableOpacity
@@ -181,6 +233,7 @@ export default function FoodSelection() {
                                 submitChoice();
                             } else {
                                 console.log("Próxima pergunta");
+                                setFoods([])
                                 setSelected([]);
                                 setConfirmed(false);
                                 loadFoods(); // 👈 AQUI
@@ -210,7 +263,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-
+        color: '#0f172a', // 👈 obrigatóri
         backgroundColor: '#ffffff',
         borderRadius: 16,
 
