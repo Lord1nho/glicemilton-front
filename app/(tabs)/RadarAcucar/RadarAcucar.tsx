@@ -58,10 +58,42 @@ type GlicemiaRegistro = {
     data_hora: string;
 };
 
+
+type Classificacao = 'baixa' | 'normal' | 'alta';
+
+
+
+const classificarGlicemia = (
+    valor: number,
+    periodo: Periodo
+): Classificacao => {
+    if (periodo === 1) { // Jejum
+        if (valor < 70) return 'baixa';
+        if (valor > 99) return 'alta';
+        return 'normal';
+    }
+
+    if (periodo === 2) { // Após refeição
+        if (valor < 80) return 'baixa';
+        if (valor > 140) return 'alta';
+        return 'normal';
+    }
+
+    if (periodo === 3) { // Antes de dormir
+        if (valor < 100) return 'baixa';
+        if (valor > 140) return 'alta';
+        return 'normal';
+    }
+
+    return 'normal';
+};
+
 export default function RadarAcucar() {
 
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [valueGlicemy, setValueGlicemy] = useState('');
+    const [glicemiaRegistrada, setGlicemiaRegistrada] = useState<number | null>(null);
+    const [periodoRegistrado, setPeriodoRegistrado] = useState<Periodo | null>(null);
     const [periodo, setPeriodo] = useState<Periodo>(1);
     const [nivelGlicemy, setNivelGlicemy ] = useState<number | null>(null);
     const [lastRegistry,  setLastRegistry] = useState<GlicemiaRegistro[]>([]);
@@ -110,6 +142,9 @@ export default function RadarAcucar() {
                 text1: `Glicemia registrada com sucesso!`,
             });
             setValueGlicemy('');
+            setGlicemiaRegistrada(valor);
+            setPeriodoRegistrado(periodo);
+
         }
     };
 
@@ -155,22 +190,71 @@ export default function RadarAcucar() {
         init();
     }, []);
 
+    const limparFormulario = () => {
+        setValueGlicemy('');
+        setPeriodo(1);
+
+        setGlicemiaRegistrada(null);
+        setPeriodoRegistrado(null);
+    };
+
+    useEffect(() => {
+        if (glicemiaRegistrada !== null) {
+            const timer = setTimeout(limparFormulario, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [glicemiaRegistrada]);
+
     return (
         <Screen>
             <ScrollView style={styles.container} contentContainerStyle={styles.content}>
 
                 {/* Card Mensagem*/}
-                <View style={styles.messageCard}>
-                    <Ionicons name="alert-circle" size={42} color="#FF3B30" />
+                {glicemiaRegistrada !== null && periodoRegistrado !== null && (() => {
+                    const classificacao = classificarGlicemia(
+                        glicemiaRegistrada,
+                        periodoRegistrado
+                    );
 
-                    <Text style={styles.messageTitle}>Glicemia Alta!</Text>
+                    const config = {
+                        baixa: {
+                            title: 'Glicemia Baixa!',
+                            subtitle: 'Atenção aos sintomas.',
+                            color: '#FF3B30',
+                        },
+                        normal: {
+                            title: 'Glicemia Normal',
+                            subtitle: 'Tudo certo!',
+                            color: '#34C759',
+                        },
+                        alta: {
+                            title: 'Glicemia Alta!',
+                            subtitle: 'Glicemilton está preocupado.',
+                            color: '#FF9500',
+                        },
+                    }[classificacao];
 
-                    <Text style={styles.messageSubtitle}>
-                        Glicemilton está preocupado. Consulte seu médico!
-                    </Text>
+                    return (
+                        <View style={[styles.messageCard, { borderLeftColor: config.color }]}>
+                            <Ionicons name="alert-circle" size={42} color={config.color} />
 
-                    <Text style={styles.messageValue}>234 mg/dL</Text>
-                </View>
+                            <Text style={[styles.messageTitle, { color: config.color }]}>
+                                {config.title}
+                            </Text>
+
+                            <Text style={styles.messageSubtitle}>
+                                {config.subtitle}
+                            </Text>
+
+                            <Text style={styles.messageValue}>
+                                {glicemiaRegistrada} mg/dL
+                            </Text>
+                        </View>
+                    );
+                })()}
+
+
+
 
                 {/* Card destaque */}
                 <View style={styles.highlightCard}>
@@ -205,7 +289,7 @@ export default function RadarAcucar() {
                     <View style={styles.select}>
                         <Picker
                             selectedValue={periodo}
-                            onValueChange={(value) => setPeriodo(value)}
+                            onValueChange={(value) => setPeriodo(Number(value) as Periodo)}
                             style={styles.picker}
                             dropdownIconColor="#666"
                         >
