@@ -11,6 +11,7 @@ import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import Screen from "@/app/components/Screen";
 import {supabase} from "@/lib/supabase";
+import Toast from "react-native-toast-message";
 
 type message = {
     id: number;
@@ -18,6 +19,8 @@ type message = {
     message: string;
     value: number;
 }
+
+
 
 const messagesGlicemia: message[] = [
     {
@@ -42,29 +45,110 @@ const messagesGlicemia: message[] = [
     },
 ]
 
+type Periodo = 1 | 2 | 3;
+
+const PERIODOS: Record<Periodo, string> = {
+    1: 'Jejum',
+    2: 'Após refeição',
+    3: 'Antes de dormir',
+};
+
+type GlicemiaRegistro = {
+    valor_mgdl: number;
+    data_hora: string;
+};
+
 export default function RadarAcucar() {
 
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
+    const [valueGlicemy, setValueGlicemy] = useState('');
+    const [periodo, setPeriodo] = useState<Periodo>(1);
+    const [nivelGlicemy, setNivelGlicemy ] = useState<number | null>(null);
+    const [lastRegistry,  setLastRegistry] = useState<GlicemiaRegistro[]>([]);
+
+    const registrarGlicemia = async () => {
+        // 1️⃣ validações
+        if (!valueGlicemy) {
+            alert('Informe o valor da glicemia');
+            return;
+        }
+
+        if (!periodo) {
+            alert('Selecione o período');
+            return;
+        }
+
+        if (!usuarioId) {
+            alert('Usuário não identificado');
+            return;
+        }
+
+        const valor = Number(valueGlicemy);
+
+        if (isNaN(valor)) {
+            alert('Valor inválido');
+            return;
+        }
+
+        // 2️⃣ salvar no Supabase
+        const { error } = await supabase
+            .from('glicemia')
+            .insert({
+                id_usuario: usuarioId,
+                valor_mgdl: valor,
+                periodo: periodo,
+                descricao_periodo: PERIODOS[periodo],
+            });
+
+        // 3️⃣ feedback
+        if (error) {
+            console.error(error);
+            alert('Erro ao registrar glicemia');
+        } else {
+            Toast.show({
+                type: "success",
+                text1: `Glicemia registrada com sucesso!`,
+            });
+            setValueGlicemy('');
+        }
+    };
 
     useEffect(() => {
         async function init() {
-            // 1️⃣ carrega usuário
+            // 1️⃣ carrega sessão
             const { data: sessionData } = await supabase.auth.getSession();
 
-            if (sessionData.session) {
-                const authId = sessionData.session.user.id;
+            if (!sessionData.session) return;
 
-                const { data, error } = await supabase
-                    .from('usuarios')
-                    .select('id_usuario')
-                    .eq('auth_id', authId)
-                    .single();
+            const authId = sessionData.session.user.id;
 
-                if (error) {
-                    console.log('Erro ao buscar usuarioId:', error);
-                } else {
-                    setUsuarioId(data.id_usuario); // 👈 aqui nasce o usuarioId
-                }
+            // 2️⃣ busca id_usuario
+            const { data: usuario, error: usuarioError } = await supabase
+                .from('usuarios')
+                .select('id_usuario')
+                .eq('auth_id', authId)
+                .single();
+
+            if (usuarioError || !usuario) {
+                console.log('Erro ao buscar usuarioId:', usuarioError);
+                return;
+            }
+
+            setUsuarioId(usuario.id_usuario);
+
+            // 3️⃣ busca últimas 3 glicemias
+            const { data: glicemias, error: glicemiasError } = await supabase
+                .from('glicemia')
+                .select('valor_mgdl, data_hora')
+                .eq('id_usuario', usuario.id_usuario)
+                .order('data_hora', { ascending: false })
+                .limit(3);
+
+            if (glicemiasError) {
+                console.log('Erro ao buscar glicemias:', glicemiasError);
+            } else {
+                console.log(glicemias)
+                setLastRegistry(glicemias ?? []);
             }
         }
 
@@ -109,6 +193,8 @@ export default function RadarAcucar() {
                         placeholder="Ex: 95"
                         placeholderTextColor="#999"
                         style={styles.input}
+                        value={valueGlicemy}
+                        onChangeText={setValueGlicemy}
                         keyboardType="numeric"
                         inputMode="numeric"
                         maxLength={3}
@@ -118,7 +204,8 @@ export default function RadarAcucar() {
 
                     <View style={styles.select}>
                         <Picker
-                            selectedValue={"jejum"}
+                            selectedValue={periodo}
+                            onValueChange={(value) => setPeriodo(value)}
                             style={styles.picker}
                             dropdownIconColor="#666"
                         >
@@ -128,7 +215,7 @@ export default function RadarAcucar() {
                         </Picker>
                     </View>
 
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={registrarGlicemia}>
                         <Ionicons name="bar-chart" size={18} color="#FFF" />
                         <Text style={styles.buttonText}>Registrar Glicemia</Text>
                     </TouchableOpacity>
@@ -162,14 +249,23 @@ export default function RadarAcucar() {
                         <Text style={styles.cardTitle}>Últimos Registros</Text>
                     </View>
 
-                    <View style={styles.lastRecordRow}>
-                        <View style={styles.lastRecordLeft}>
-                            <Ionicons name="warning-outline" size={18} color="#F2A900" />
-                            <Text style={styles.lastRecordValue}>53 mg/dL</Text>
-                        </View>
 
-                        <Text style={styles.lastRecordTime}>15:10</Text>
-                    </View>
+                    {
+                        lastRegistry.map((item,index) => (
+                            <View key={index} style={styles.lastRecordRow}>
+                                <View style={styles.lastRecordLeft}>
+                                    <Ionicons name="warning-outline" size={18} color="#F2A900" />
+                                    <Text style={styles.lastRecordValue}>{`${item.valor_mgdl} mg/dl`}</Text>
+                                </View>
+
+                                <Text style={styles.lastRecordTime}>{new Date(item.data_hora).toLocaleTimeString('pt-BR', {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                })}</Text>
+                            </View>
+                        ))
+                    }
+
                 </View>
             </ScrollView>
         </Screen>
