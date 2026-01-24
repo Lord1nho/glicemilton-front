@@ -21,8 +21,6 @@ type message = {
     value: number;
 }
 
-
-
 const messagesGlicemia: message[] = [
     {
         id: 1,
