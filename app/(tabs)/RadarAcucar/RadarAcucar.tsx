@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {
     View,
     Text,
@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Screen from "@/app/components/Screen";
 import {supabase} from "@/lib/supabase";
 import Toast from "react-native-toast-message";
+import {useFocusEffect} from "expo-router";
 
 type message = {
     id: number;
@@ -115,7 +116,7 @@ export default function RadarAcucar() {
             return;
         }
 
-        const valor = Number(valueGlicemy);
+        const valor = parseFloat(valueGlicemy.replace(",", "."));
 
         if (isNaN(valor)) {
             alert('Valor inválido');
@@ -148,6 +149,22 @@ export default function RadarAcucar() {
         }
     };
 
+    const carregarUltimasGlicemias = async (id_usuario:number) => {
+        const { data: glicemias, error: glicemiasError } = await supabase
+            .from('glicemia')
+            .select('valor_mgdl, data_hora')
+            .eq('id_usuario', id_usuario)
+            .order('data_hora', { ascending: false })
+            .limit(3);
+
+        if (glicemiasError) {
+            console.log('Erro ao buscar glicemias:', glicemiasError);
+        } else {
+            console.log(glicemias)
+            setLastRegistry(glicemias ?? []);
+        }
+    };
+
     useEffect(() => {
         async function init() {
             // 1️⃣ carrega sessão
@@ -171,20 +188,6 @@ export default function RadarAcucar() {
 
             setUsuarioId(usuario.id_usuario);
 
-            // 3️⃣ busca últimas 3 glicemias
-            const { data: glicemias, error: glicemiasError } = await supabase
-                .from('glicemia')
-                .select('valor_mgdl, data_hora')
-                .eq('id_usuario', usuario.id_usuario)
-                .order('data_hora', { ascending: false })
-                .limit(3);
-
-            if (glicemiasError) {
-                console.log('Erro ao buscar glicemias:', glicemiasError);
-            } else {
-                console.log(glicemias)
-                setLastRegistry(glicemias ?? []);
-            }
         }
 
         init();
@@ -200,10 +203,19 @@ export default function RadarAcucar() {
 
     useEffect(() => {
         if (glicemiaRegistrada !== null) {
-            const timer = setTimeout(limparFormulario, 3000);
+            const timer = setTimeout(limparFormulario, 5000);
             return () => clearTimeout(timer);
         }
     }, [glicemiaRegistrada]);
+
+
+    useFocusEffect(
+        useCallback(() => {
+            if (usuarioId) {
+                carregarUltimasGlicemias(usuarioId);
+            }
+        }, [usuarioId])
+    );
 
     return (
         <Screen>
@@ -217,6 +229,8 @@ export default function RadarAcucar() {
                     );
 
                     const config = {
+
+
                         baixa: {
                             title: 'Glicemia Baixa!',
                             subtitle: 'Atenção aos sintomas.',
@@ -235,18 +249,18 @@ export default function RadarAcucar() {
                     }[classificacao];
 
                     return (
-                        <View style={[styles.messageCard, { borderLeftColor: config.color }]}>
+                        <View style={[styles.messageCard, { borderColor: config.color }]}>
                             <Ionicons name="alert-circle" size={42} color={config.color} />
 
                             <Text style={[styles.messageTitle, { color: config.color }]}>
                                 {config.title}
                             </Text>
 
-                            <Text style={styles.messageSubtitle}>
+                            <Text style={[styles.messageSubtitle, { color: config.color }]}>
                                 {config.subtitle}
                             </Text>
 
-                            <Text style={styles.messageValue}>
+                            <Text style={[styles.messageValue, { color: config.color }]}>
                                 {glicemiaRegistrada} mg/dL
                             </Text>
                         </View>
@@ -520,13 +534,11 @@ const styles = StyleSheet.create({
         marginTop: 8,
         fontSize: 18,
         fontWeight: "700",
-        color: "#FF3B30",
     },
 
     messageSubtitle: {
         marginTop: 6,
         fontSize: 13,
-        color: "#FF3B30",
         textAlign: "center",
     },
 
@@ -534,7 +546,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 20,
         fontWeight: "800",
-        color: "#FF3B30",
     },
 
 });

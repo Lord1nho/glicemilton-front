@@ -5,7 +5,7 @@ import {useFocusEffect} from "expo-router";
 import Toast from "react-native-toast-message";
 import {getFoods, salvarResultadoPergunta, salvarSelecoes} from "@/lib/services/desafioMerendaService";
 import {supabase} from "@/lib/supabase";
-import {Loading} from "@/app/components/Loading";
+import Loading from "@/app/components/Loading";
 
 export type Food = {
     id_alimento: number;
