@@ -14,6 +14,7 @@ export default function DiarioFormiga() {
     const [jaRegistradoHoje, setJaRegistradoHoje] = useState(false);
     const [loading, setLoading] = useState(true);
     const [historico, setHistorico] = useState<{ data: string; estado: MoodState }[]>([]);
+    const [historicoGeral, setHistoricoGeral] = useState<{ data: string; estado: MoodState }[]>([]);
     function selecionarHumor(estado: MoodState) {
         setEstadoSelecionado(estado);
     }
@@ -32,6 +33,22 @@ export default function DiarioFormiga() {
             console.log(humor)
             setHistorico(humor);
             }
+    }
+
+    async function carregarHistoricoGeral() {
+        const { data: humor, error: humorError } = await supabase
+            .from('humor_diario')
+            .select('data, estado')
+            .eq('id_usuario', usuarioId)
+            .order('data', { ascending: false })
+
+        if (humorError) {
+            console.error(humorError);
+            return;
+        }
+
+        console.log(`Resenha: ${humor?.length ?? 0}`);
+        setHistoricoGeral(humor);
     }
 
     async function salvarNoDiario() {
@@ -90,9 +107,9 @@ export default function DiarioFormiga() {
     }, []);
 
     const stats = useMemo(() => {
-        const diasRegistrados = historico.length;
+        const diasRegistrados = historicoGeral.length;
 
-        const diasPositivos = historico.filter(
+        const diasPositivos = historicoGeral.filter(
             (item) => MOOD_STATES[item.estado].positivo
         ).length;
 
@@ -111,7 +128,7 @@ export default function DiarioFormiga() {
     useEffect(() => {
         if (usuarioId) {
             verificarRegistroHoje();
-            carregarHistorico()
+            carregarHistorico();;
         }
     }, [usuarioId]);
 
@@ -122,6 +139,7 @@ export default function DiarioFormiga() {
             if (usuarioId) {
                 carregarHistorico()
                 verificarRegistroHoje();
+                carregarHistoricoGeral()
             }
         }, [usuarioId])
     );
