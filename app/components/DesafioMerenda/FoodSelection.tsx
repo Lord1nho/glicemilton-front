@@ -6,6 +6,7 @@ import Toast from "react-native-toast-message";
 import {getFoods, salvarResultadoPergunta, salvarSelecoes} from "@/lib/services/desafioMerendaService";
 import {supabase} from "@/lib/supabase";
 import Loading from "@/app/components/Loading";
+import FinalResultModal from "@/app/components/DesafioMerenda/ModalEndGame";
 
 export type Food = {
     id_alimento: number;
@@ -63,6 +64,8 @@ export default function FoodSelection() {
     const [confirmed, setConfirmed] = useState(false);
     const [pontos, setPontos] = useState(0);
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
+    const [nrPergunta, setNrPergunta] = useState<number | null>(1);
+    const [showModal, setShowModal] = useState(false);
 
 
 
@@ -183,17 +186,27 @@ export default function FoodSelection() {
             });
         }
 
+        if(nrPergunta === 5) setShowModal(true);
         setConfirmed(true);
 
     }
 
     return (
-        <Screen>
+        <>
             <View style={styles.scoreBox}>
-                <Text style={{ color: 'red', fontSize: 16 }}>
-                    TESTE
+                <FinalResultModal visible={showModal} score={pontos} onRestart={() => {
+                    setNrPergunta(1);
+                    setFoods([])
+                    setSelected([]);
+                    setConfirmed(false);
+                    loadFoods(); // 👈 AQUI
+                    setShowModal(false)
+                    setPontos(0);
+                }}/>
+                <Text style={{ fontSize: 16 }}>
+                   🏆 Pontos: {pontos}
                 </Text>
-                <Text style={styles.questionText}>Pergunta 1 de 5</Text>
+                <Text style={styles.questionText}>Pergunta {nrPergunta} de 5</Text>
             </View>
             <View style={styles.container}>
                 {loading ? (
@@ -233,6 +246,7 @@ export default function FoodSelection() {
                                 submitChoice();
                             } else {
                                 console.log("Próxima pergunta");
+                                setNrPergunta(prevState => prevState + 1);
                                 setFoods([])
                                 setSelected([]);
                                 setConfirmed(false);
@@ -246,7 +260,7 @@ export default function FoodSelection() {
                     </TouchableOpacity>
                 </View>
             </View>
-        </Screen>
+        </>
     );
 }
 
