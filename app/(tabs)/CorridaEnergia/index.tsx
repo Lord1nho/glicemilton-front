@@ -114,7 +114,7 @@ export default function EnergiaScreen() {
 
     function isActivityDoneToday(activityId: number) {
         return activitiesToday.some(
-            activity => activity.atividade_id === activityId
+            activity => activity.id_atividade=== activityId
         );
     }
 
