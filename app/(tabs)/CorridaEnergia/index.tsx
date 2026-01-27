@@ -1,20 +1,172 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
     View,
     Text,
     StyleSheet,
-    ScrollView,
+    ScrollView, Button, TouchableOpacity,
 } from "react-native";
 import HintCard from "@/app/components/DesafioMerenda/hint";
 import Screen from "@/app/components/Screen";
+import {supabase} from "@/lib/supabase";
+import Toast from "react-native-toast-message";
+
+type Activity = {
+    id_atividade: number;
+    name: string,
+    subtitle: string,
+    emoji: string,
+    points: number
+}
+
+type ActivityToday = {
+    id_realizada: number;
+    id_usuario: number;
+    data_hora: string;
+    id_atividade: number;
+    name: string;
+    points: number;
+    emoji: string;
+};
+
 
 export default function EnergiaScreen() {
-    return (
+    const [usuarioId, setUsuarioId] = useState<number | null>(null);
+    const [activities, setActivities] = useState<Activity[]>([]);
+    const [activitiesToday, setActivitiesToday] = useState<ActivityToday[]>([]);
+    const [totalpointsToday, setTotalPointsToday] = useState<number>(0);
+
+
+    function getTodayRangeUTC() {
+        const start = new Date();
+        start.setHours(0, 0, 0, 0);
+
+        const end = new Date(start);
+        end.setDate(end.getDate() + 1);
+
+        return {
+            startUTC: start.toISOString(),
+            endUTC: end.toISOString(),
+        };
+    }
+
+    async function carregarActivitiesToday() {
+        if (!usuarioId) return;
+
+        const { startUTC, endUTC } = getTodayRangeUTC();
+
+        const { data, error } = await supabase
+            .from("atividade_realizada_detalhada")
+            .select("*")
+            .eq("id_usuario", usuarioId)
+            .gte("data_hora", startUTC)
+            .lt("data_hora", endUTC);
+
+        if (error) {
+            console.error("❌ Erro ao buscar atividades:", error);
+            return;
+        }
+
+        setActivitiesToday(data ?? []);
+        console.log("📊 Data recebida:", data);
+    }
+
+    async function getActivities() {
+        try {
+            const { data, error } = await supabase
+                .from("atividade_fisica")
+                .select("id_atividade ,name, subtitle, emoji, points");
+
+            if (error) {
+                throw error;
+            }
+
+            setActivities(data as Activity[]);
+        } catch (err) {
+            console.error("Erro ao buscar atividades:", err);
+        }
+    }
+
+    async function markActivity(item: Activity) {
+        const { error } = await supabase
+            .from("atividade_realizada")
+            .insert({
+                id_usuario: usuarioId,
+                id_atividade: item.id_atividade,
+                data_hora: new Date().toISOString(),
+            });
+
+        if (error) {
+            Toast.show({
+                type: "error",
+                text1: "Erro ao enviar",
+            });
+            return;
+        }
+
+        Toast.show({
+            type: "success",
+            text1: "Atividade Salva! Continue assim!",
+        });
+
+        setTotalPointsToday(prev => prev + item.points);
+        carregarActivitiesToday();
+    }
+
+    function isActivityDoneToday(activityId: number) {
+        return activitiesToday.some(
+            activity => activity.atividade_id === activityId
+        );
+    }
+
+    useEffect(() => {
+        async function init() {
+            // 1️⃣ carrega sessão
+            const { data: sessionData } = await supabase.auth.getSession();
+
+            if (!sessionData.session) return;
+
+            const authId = sessionData.session.user.id;
+
+            // 2️⃣ busca id_usuario
+            const { data: usuario, error: usuarioError } = await supabase
+                .from('usuarios')
+                .select('id_usuario')
+                .eq('auth_id', authId)
+                .single();
+
+            if (usuarioError || !usuario) {
+                console.log('Erro ao buscar usuarioId:', usuarioError);
+                return;
+            }
+
+            setUsuarioId(usuario.id_usuario);
+
+        }
+        init();
+    }, []);
+
+    useEffect(() => {
+        if (!usuarioId) return;
+        getActivities();
+        carregarActivitiesToday();
+    }, [usuarioId]);
+
+    useEffect(() => {
+        const total = activitiesToday.reduce(
+            (sum, activity) => sum + activity.points,
+            0
+        );
+        setTotalPointsToday(total);
+    }, [activitiesToday]);
+
+
+
+   return (
         <Screen>
             <ScrollView contentContainerStyle={styles.content}>
                 {/* Header */}
                 <View style={styles.header}>
-                    <HintCard text={"Energia"} />
+                    <HintCard text={"Registre suas atividades físicas"} />
                 </View>
 
                 {/* Card Energia */}
@@ -27,17 +179,20 @@ export default function EnergiaScreen() {
 
                     <View style={styles.progressHeader}>
                         <Text style={styles.progressLabel}>Progresso diário</Text>
-                        <Text style={styles.progressValue}>40/100</Text>
+                        <Text style={styles.progressValue}>{totalpointsToday}/100</Text>
                     </View>
 
                     {/* Barra de progresso (estática) */}
                     <View style={styles.progressBarBackground}>
-                        <View style={styles.progressBarFill} />
+                        <View style={[
+                            styles.progressBarFill,
+                            { width: `${totalpointsToday}%` },
+                        ]}></View>
                     </View>
 
                     <View style={styles.progressFooter}>
                         <Text style={styles.progressScale}>0</Text>
-                        <Text style={styles.progressScale}>40%</Text>
+                        <Text style={styles.progressScale}>50</Text>
                         <Text style={styles.progressScale}>100</Text>
                     </View>
                 </View>
@@ -46,13 +201,13 @@ export default function EnergiaScreen() {
                 <View style={styles.statsRow}>
                     <View style={styles.statCard}>
                         <Text style={styles.statIcon}>🎯</Text>
-                        <Text style={styles.statValue}>0</Text>
+                        <Text style={styles.statValue}>{activitiesToday.length}</Text>
                         <Text style={styles.statLabel}>Atividades hoje</Text>
                     </View>
 
                     <View style={styles.statCard}>
                         <Text style={styles.statIcon}>🟢</Text>
-                        <Text style={styles.statValue}>40</Text>
+                        <Text style={styles.statValue}>{totalpointsToday}</Text>
                         <Text style={styles.statLabel}>Pontos de energia</Text>
                     </View>
                 </View>
@@ -65,15 +220,30 @@ export default function EnergiaScreen() {
 
                 {/* Cards de atividades */}
                 <View style={styles.activityGrid}>
-                    <View style={styles.activityCard}>
-                        <Text style={styles.activityIcon}>🚶</Text>
-                        <Text style={styles.activityLabel}>Caminhada</Text>
-                    </View>
+                    {activities.map((item) => {
+                        const doneToday = isActivityDoneToday(item.id_atividade);
 
-                    <View style={styles.activityCard}>
-                        <Text style={styles.activityIcon}>🏃</Text>
-                        <Text style={styles.activityLabel}>Corrida</Text>
-                    </View>
+                        return (
+                            <View key={item.id_atividade} style={[styles.activityCard, doneToday && styles.activityCardDone]}>
+                                <Text style={styles.activityIcon}>{item.emoji}</Text>
+                                <Text style={styles.activityLabel}>{item.name}</Text>
+                                <Text>{item.subtitle}</Text>
+
+                                <TouchableOpacity
+                                    style={[
+                                        styles.energyButton,
+                                        doneToday && styles.energyButtonDisabled
+                                    ]}
+                                    disabled={doneToday}
+                                    onPress={() => markActivity(item)}
+                                >
+                                    <Text style={styles.energyButtonText}>
+                                        {doneToday ? "✔ Concluído" : `+${item.points} ⚡`}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        );
+                    })}
                 </View>
             </ScrollView>
         </Screen>
@@ -132,6 +302,25 @@ const styles = StyleSheet.create({
         fontSize: 12,
         marginVertical: 8,
     },
+
+    energyButton: {
+        marginTop: 10,
+        width: "80%",
+        backgroundColor: "#FF8C1A",
+        paddingVertical: 12,
+        borderRadius: 20,
+        alignItems: "center",
+    },
+
+    energyButtonDisabled: {
+        backgroundColor: "#6EDC8C",
+        opacity: 0.7,
+    },
+    energyButtonText: {
+        color: "#fff",
+        fontWeight: "700",
+        fontSize: 14,
+    },
     progressHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -151,7 +340,6 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     progressBarFill: {
-        width: "40%",
         height: "100%",
         backgroundColor: "#FF8C1A",
     },
@@ -211,15 +399,25 @@ const styles = StyleSheet.create({
     /* Activities */
     activityGrid: {
         flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
         gap: 12,
     },
+
     activityCard: {
-        flex: 1,
-        backgroundColor: "#FFF",
+        width: "48%",
+        backgroundColor: "#fff",
         borderRadius: 16,
-        padding: 20,
+        paddingVertical: 20,
         alignItems: "center",
     },
+
+    activityCardDone: {
+        backgroundColor: "#D6F5EE",
+        borderWidth: 1.5,
+        borderColor: "#34C759",
+    },
+
     activityIcon: {
         fontSize: 28,
         marginBottom: 6,
