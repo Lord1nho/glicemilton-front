@@ -1,8 +1,81 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { BookOpen, Backpack, PartyPopper, AlertCircle } from "lucide-react-native";
+import {useEffect, useState} from "react";
+import {supabase} from "@/lib/supabase";
+import {router} from "expo-router";
 
-export default function MissaoGlicemilton() {
+type Mission = {
+    id_missao: number;
+    titulo: string;
+    descricao: string;
+    pontos: number;
+    respondida_hoje: boolean;
+    acertou_hoje: boolean;
+};
+
+export default function Index() {
+    const [usuarioId, setUsuarioId] = useState<number | null>(null);
+    const [missao,  setmisao] = useState<Mission[]>([]);
+
+    async function getMissions() {
+        if (!usuarioId) return;
+
+
+        const { data, error } = await supabase
+            .from("vw_missao_respondida_hoje")
+            .select("*")
+            .eq("id_usuario", usuarioId);
+
+        if (error) {
+            console.error("❌ Erro ao buscar atividades:", error);
+            return;
+        }
+
+        setmisao(data)
+        console.log("📊 Data recebida:", data);
+   }
+
+    useEffect(() => {
+        async function init() {
+            // 1️⃣ carrega sessão
+            const { data: sessionData } = await supabase.auth.getSession();
+
+            if (!sessionData.session) return;
+
+            const authId = sessionData.session.user.id;
+
+            // 2️⃣ busca id_usuario
+            const { data: usuario, error: usuarioError } = await supabase
+                .from('usuarios')
+                .select('id_usuario')
+                .eq('auth_id', authId)
+                .single();
+
+            if (usuarioError || !usuario) {
+                console.log('Erro ao buscar usuarioId:', usuarioError);
+                return;
+            }
+
+            setUsuarioId(usuario.id_usuario);
+
+        }
+        init();
+    }, []);
+
+
+    useEffect(() => {
+        if (!usuarioId) return;
+        getMissions()
+    }, [usuarioId]);
+
+    const missoesRespondidasHoje =
+        missao.filter(m => m.respondida_hoje).length;
+
+    const pontuacaoMissoes =
+        missao.filter(m => m.respondida_hoje && m.acertou_hoje).reduce((acc, m) => acc+m.pontos, 0);
     return (
+
+
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
 
             {/* HEADER */}
@@ -22,12 +95,12 @@ export default function MissaoGlicemilton() {
 
                 <View style={styles.stats}>
                     <View style={styles.statItem}>
-                        <Text style={styles.statValue}>0</Text>
+                        <Text style={styles.statValue}>{pontuacaoMissoes}</Text>
                         <Text style={styles.statLabel}>Pontos</Text>
                     </View>
 
                     <View style={styles.statItem}>
-                        <Text style={[styles.statValue, { color: "#16a34a" }]}>0</Text>
+                        <Text style={[styles.statValue, { color: "#16a34a" }]}>{missoesRespondidasHoje}</Text>
                         <Text style={styles.statLabel}>Missões</Text>
                     </View>
                 </View>
@@ -35,27 +108,24 @@ export default function MissaoGlicemilton() {
 
             {/* MISSÕES */}
             <Text style={styles.sectionTitle}>Missões Disponíveis</Text>
-
-            <MissionCard
-                icon={<Backpack color="#ea580c" />}
-                title="O Lanche da Escola"
-                description="Glicemilton está na escola e precisa escolher o lanche. Sua mãe deu dinheiro para comprar algo na cantina. O que ele deve escolher?"
-                points="+50 pontos"
-            />
-
-            <MissionCard
-                icon={<PartyPopper color="#ea580c" />}
-                title="A Festa de Aniversário"
-                description="Glicemilton foi convidado para a festa do amigo. Tem muitos doces e bolos. Como ele deve se comportar?"
-                points="+50 pontos"
-            />
-
-            <MissionCard
-                icon={<AlertCircle color="#ea580c" />}
-                title="O Sintoma Estranho"
-                description="Glicemilton está sentindo tontura e fraqueza. Ele mediu a glicemia e estava baixa. O que deve fazer?"
-                points="+50 pontos"
-            />
+            {
+                missao.map(m => (
+                    <MissionCard
+                        key={m.id_missao}
+                        icon={<Backpack color="#ea580c" />}
+                        title={m.titulo}
+                        description={m.descricao}
+                        points={m.pontos}
+                        respondida_hoje={m.respondida_hoje}
+                        onPress={() =>
+                            router.push({
+                                pathname: "/MissaoGlicemilton/[id]",
+                                params: { id: (m.id_missao) },
+                            })
+                        }
+                    />
+                ))
+            }
         </ScrollView>
     );
 }
@@ -67,11 +137,15 @@ function MissionCard({
                          title,
                          description,
                          points,
+                        respondida_hoje,
+                        onPress
                      }: {
     icon: React.ReactNode;
     title: string;
     description: string;
-    points: string;
+    points: number;
+    respondida_hoje: boolean,
+    onPress: () => void;
 }) {
     return (
         <View style={styles.card}>
@@ -82,10 +156,20 @@ function MissionCard({
                 <Text style={styles.cardDescription}>{description}</Text>
 
                 <View style={styles.cardFooter}>
-                    <Text style={styles.points}>{points}</Text>
+                    <Text style={styles.points}>+{points} pontos</Text>
 
-                    <TouchableOpacity style={styles.startButton}>
-                        <Text style={styles.startButtonText}>Iniciar</Text>
+
+                    <TouchableOpacity
+                        style={[
+                            styles.startButton,
+                            respondida_hoje && styles.startButtonDisabled,
+                        ]}
+                        onPress={onPress}
+                        disabled={respondida_hoje}
+                    >
+                        <Text style={styles.startButtonText}>
+                            {respondida_hoje ? "Respondida" : "Iniciar"}
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -216,6 +300,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 6,
         borderRadius: 999,
+    },
+
+    startButtonDisabled: {
+        backgroundColor: "#d1d5db",
     },
 
     startButtonText: {
