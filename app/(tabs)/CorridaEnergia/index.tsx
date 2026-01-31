@@ -107,14 +107,14 @@ export default function EnergiaScreen() {
             type: "success",
             text1: "Atividade Salva! Continue assim!",
         });
-
-        setTotalPointsToday(prev => prev + item.points);
-        carregarActivitiesToday();
+        await carregarActivitiesToday();
     }
 
     function isActivityDoneToday(activityId: number) {
+        console.log(activitiesToday);
+        console.log(activityId);
         return activitiesToday.some(
-            activity => activity.id_atividade=== activityId
+            activity => activity.id_atividade === activityId
         );
     }
 
@@ -138,9 +138,7 @@ export default function EnergiaScreen() {
                 console.log('Erro ao buscar usuarioId:', usuarioError);
                 return;
             }
-
             setUsuarioId(usuario.id_usuario);
-
         }
         init();
     }, []);
@@ -174,11 +172,17 @@ export default function EnergiaScreen() {
                     <Text style={styles.energyIcon}>⚡</Text>
                     <Text style={styles.energyTitle}>Energia do Glicemilton</Text>
                     <Text style={styles.energySubtitle}>
-                        💪 Bom progresso! Continue assim!
+                        💪 {
+                        totalpointsToday === 0
+                            ? "Registre suas atividades físicas"
+                            : totalpointsToday >= 100
+                                ? "🎉 Parabéns, meta diária alcançada!"
+                                : "Bom progresso, continue assim!"
+                    }
                     </Text>
 
                     <View style={styles.progressHeader}>
-                        <Text style={styles.progressLabel}>Progresso diário</Text>
+                        <Text style={styles.progressLabel}>Meta diária</Text>
                         <Text style={styles.progressValue}>{totalpointsToday}/100</Text>
                     </View>
 
@@ -223,6 +227,7 @@ export default function EnergiaScreen() {
                     {activities.map((item) => {
                         const doneToday = isActivityDoneToday(item.id_atividade);
 
+
                         return (
                             <View key={item.id_atividade} style={[styles.activityCard, doneToday && styles.activityCardDone]}>
                                 <Text style={styles.activityIcon}>{item.emoji}</Text>
@@ -262,11 +267,10 @@ const styles = StyleSheet.create({
 
     /* Header */
     header: {
-        flexDirection: "row",
-        alignItems: "center",
+        alignItems: "center", // 👈 centraliza
         marginBottom: 16,
-        gap: 8,
     },
+
     headerEmoji: {
         fontSize: 32,
     },

@@ -166,11 +166,6 @@ export default function EscudoProtetor() {
                     ))
                 }
 
-                {/* BOTÃO FINAL */}
-                <TouchableOpacity style={styles.renewButton} >
-                    <Lock color="#2563eb" size={18} />
-                    <Text style={styles.renewButtonText}>Renovar Proteções</Text>
-                </TouchableOpacity>
             </ScrollView>
         </Screen>
 
@@ -199,7 +194,7 @@ function CareCard({
             <View style={{ flex: 1 }}>
                 <Text style={[styles.cardTitle, concluido && styles.cardTitleDisabled]}>{title}</Text>
                 <Text style={styles.cardDescription}>{description}</Text>
-                {concluido ? (<Text>Proteção ativada</Text>) : (
+                {concluido ? (<Text style={styles.textProtetcionAtivacted}>✅ Proteção ativada!</Text>) : (
                     <TouchableOpacity
                         style={[
                             styles.cardButton,
@@ -334,6 +329,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: "#475569",
         marginVertical: 6,
+    },
+
+    textProtetcionAtivacted: {
+        color: "#3b82f6",
+        fontWeight: "600"
     },
 
     cardButton: {

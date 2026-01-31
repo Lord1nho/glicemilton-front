@@ -7,19 +7,23 @@ type Props = {
 };
 
 function getMessage (score: number) {
-    if (score >= 150) {
-        return "Glicemilton está MUITO orgulhoso de você! 🌟";
+    if (score === 300) {
+        return "Acertou todas as perguntas! Glicemilton está orgulhoso 🥰🐜"
     }
 
-    if (score >=100 && score < 150) {
-        return "Glicemilton está orgulhoso de você! 😊";
+    if (score >= 200) {
+        return "Glicemilton está MUITO orgulhoso de você! Boas escolhas 🌟🐜";
     }
 
-    if (score >= 0 && score < 100 ) {
-        return "Bom trabalho! Dá pra melhorar! 💪";
+    if (score >=100 && score < 200) {
+        return "Glicemilton está orgulhoso de você! Continue assim 😊🐜";
     }
 
-    return "Vamos tentar de novo? Glicemilton acredita em você! 🍎";
+    if (score >= 50 && score < 100 ) {
+        return "Bom trabalho! Dá pra melhorar! 💪🐜";
+    }
+
+    return "Vamos tentar de novo? Glicemilton acredita em você! 🍎🐜";
 }
 
 export default function FinalResultModal({ visible, score, onRestart }: Props) {

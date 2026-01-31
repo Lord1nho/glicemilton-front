@@ -11,7 +11,7 @@ export default function DesafioMerenda() {
     <Screen>
         <View style={globals.container}>
             <HintCard
-                text="Ajude o Glicemilton a Escolher os alimemntos saudáveis para a merenda!"
+                text="Ajude o Glicemilton a Escolher os alimentos saudáveis para a merenda!"
             />
             <View>
                 <FoodSelection></FoodSelection>

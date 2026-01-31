@@ -8,7 +8,7 @@ type HintCardProps = {
 export default function HintCard({ text }: HintCardProps) {
     return (
         <View style={styles.card}>
-            <Ionicons name="leaf-outline" size={20} style={styles.icon} />
+            <Text style={styles.icon} > 🐜 </Text>
             <Text style={styles.text}>
                 {text}
             </Text>
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     icon: {
         color: '#2563eb',
         marginRight: 12,
+        fontSize: 24,
     },
 
     text: {

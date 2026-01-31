@@ -243,29 +243,6 @@ export default function HoraDoSuperpo() {
                 </TouchableOpacity>
             </View>
 
-            {/* Lista de medicamentos */}
-            {medicamentos.map((med) => {
-                const uso = usosHoje.find(u => u.id_remedio === med.id_remedio);
-
-                return (
-                    <MedicationCard
-                        key={med.id_remedio}
-                        idRemedio={med.id_remedio}
-                        name={med.nome}
-                        time={med.horario.slice(0, 5)}
-                        taken={!!uso}
-                        onTomei={marcarUsoMedicamento}
-                    />
-                );
-            })}
-
-            {/* Novo dia */}
-            <TouchableOpacity style={styles.newDayButton}>
-                <Ionicons name="sunny-outline" size={16} color="#000" />
-                <Text style={styles.newDayText}>Novo Dia</Text>
-            </TouchableOpacity>
-
-            {/* Modal fake – Adicionar Medicamento */}
             {showAdd && (
                 <View style={styles.addCard}>
                     <Text style={styles.addTitle}>Adicionar Medicamento</Text>
@@ -321,6 +298,29 @@ export default function HoraDoSuperpo() {
                     </TouchableOpacity>
                 </View>
             )}
+            {/* Lista de medicamentos */}
+            {medicamentos.map((med) => {
+                const uso = usosHoje.find(u => u.id_remedio === med.id_remedio);
+
+                return (
+                    <MedicationCard
+                        key={med.id_remedio}
+                        idRemedio={med.id_remedio}
+                        name={med.nome}
+                        time={med.horario.slice(0, 5)}
+                        taken={!!uso}
+                        onTomei={marcarUsoMedicamento}
+                    />
+                );
+            })}
+
+            {/* Novo dia */}
+            <TouchableOpacity style={styles.newDayButton}>
+                <Ionicons name="sunny-outline" size={16} color="#000" />
+                <Text style={styles.newDayText}>Novo Dia</Text>
+            </TouchableOpacity>
+
+            {/* Modal fake – Adicionar Medicamento */}
         </ScrollView>
     );
 }
@@ -520,6 +520,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: 16,
         marginTop: 20,
+        marginBottom: 20,
     },
     addTitle: {
         fontSize: 16,

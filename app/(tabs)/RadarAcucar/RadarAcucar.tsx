@@ -144,6 +144,7 @@ export default function RadarAcucar() {
             setGlicemiaRegistrada(valor);
             setPeriodoRegistrado(periodo);
 
+            await carregarUltimasGlicemias(usuarioId);
         }
     };
 
@@ -192,9 +193,6 @@ export default function RadarAcucar() {
     }, []);
 
     const limparFormulario = () => {
-        setValueGlicemy('');
-        setPeriodo(1);
-
         setGlicemiaRegistrada(null);
         setPeriodoRegistrado(null);
     };
@@ -203,6 +201,7 @@ export default function RadarAcucar() {
         if (glicemiaRegistrada !== null) {
             const timer = setTimeout(limparFormulario, 5000);
             return () => clearTimeout(timer);
+
         }
     }, [glicemiaRegistrada]);
 
@@ -228,21 +227,20 @@ export default function RadarAcucar() {
 
                     const config = {
 
-
                         baixa: {
-                            title: 'Glicemia Baixa!',
-                            subtitle: 'Atenção aos sintomas.',
-                            color: '#FF3B30',
+                            title: 'Glicemia Baixa',
+                            subtitle: 'Está um pouco abaixo do normal.',
+                            color: '#FF9500',
                         },
                         normal: {
                             title: 'Glicemia Normal',
-                            subtitle: 'Tudo certo!',
+                            subtitle: 'Está tudo dentro do esperado.',
                             color: '#34C759',
                         },
                         alta: {
-                            title: 'Glicemia Alta!',
-                            subtitle: 'Glicemilton está preocupado.',
-                            color: '#FF9500',
+                            title: 'Glicemia Alta',
+                            subtitle: 'Está um pouco acima do normal.',
+                            color: '#FF3B30',
                         },
                     }[classificacao];
 
