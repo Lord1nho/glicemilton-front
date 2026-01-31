@@ -31,9 +31,10 @@ export default function TabsLayout() {
             <Tabs.Screen
                 name="DesafioMerenda"
                 options={{
-                    title: "Desafio da Merenda",
+                    tabBarLabel: 'Merenda', // 👈 nome da aba
+                    headerTitle: 'Desafio da Merenda', // 👈 nome do header
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="home" size={size} color={color} />
+                        <Ionicons name="nutrition-outline" size={size} color={color} />
                     ),
                     headerRight: () => (
                         <TouchableOpacity
@@ -61,9 +62,10 @@ export default function TabsLayout() {
             <Tabs.Screen
                 name="CorridaEnergia"
                 options={{
-                    title: 'Corrida da Energia',
+                    tabBarLabel: 'Energia', // 👈 nome da aba
+                    headerTitle: 'Corrida da Energia', // 👈 nome do header
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="water" size={size} color={color} />
+                        <Ionicons name="flash-outline" size={size} color={color} />
                     ),
                     headerRight: () => (
                         <TouchableOpacity
@@ -91,9 +93,10 @@ export default function TabsLayout() {
             <Tabs.Screen
                 name="RadarAcucar"
                 options={{
-                    title: 'Radar do Açúcar',
+                    tabBarLabel: 'Radar', // 👈 nome da aba
+                    headerTitle: 'Radar do Açúcar', // 👈 nome do header
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="medkit" size={size} color={color} />
+                        <Ionicons name="pulse-outline" size={size} color={color} />
                     ),
                     headerRight: () => (
                         <TouchableOpacity
@@ -121,9 +124,10 @@ export default function TabsLayout() {
             <Tabs.Screen
                 name="SuperPo"
                 options={{
-                    title: 'Hora do SuperPó',
+                    tabBarLabel: 'Medicação', // 👈 nome da aba
+                    headerTitle: 'Ritual da Saúde', // 👈 nome do header
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="trophy" size={size} color={color} />
+                        <Ionicons name="medical-outline" size={size} color={color} />
                     ),
                     headerRight: () => (
                         <TouchableOpacity
@@ -151,9 +155,10 @@ export default function TabsLayout() {
             <Tabs.Screen
                 name="EscudoProtetor"
                 options={{
-                    title: 'Escudo Protetor',
+                    tabBarLabel: 'Escudo', // 👈 nome da aba
+                    headerTitle: 'Escudo Protetor', // 👈 nome do header
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="person" size={size} color={color} />
+                        <Ionicons name="shield-outline" size={size} color={color} />
                     ),
                     headerRight: () => (
                         <TouchableOpacity
@@ -181,9 +186,10 @@ export default function TabsLayout() {
             <Tabs.Screen
                 name="MissaoGlicemilton"
                 options={{
-                    title: 'Missão SOS Glicemilton',
+                    tabBarLabel: 'Missões', // 👈 nome da aba
+                    headerTitle: 'Missão SOS Glicemilton', // 👈 nome do header
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="person" size={size} color={color} />
+                        <Ionicons name="book-outline" size={size} color={color} />
                     ),
                     headerRight: () => (
                         <TouchableOpacity
@@ -211,9 +217,10 @@ export default function TabsLayout() {
             <Tabs.Screen
                 name="DiarioFormiga"
                 options={{
-                    title: 'Diário da Formiga Sábia',
+                    tabBarLabel: 'Diário', // 👈 nome da aba
+                    headerTitle: 'Diário da Formiga Sábia', // 👈 nome do header
                     tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="person" size={size} color={color} />
+                        <Ionicons name="heart-outline" size={size} color={color} />
                     ),
                     headerRight: () => (
                         <TouchableOpacity
