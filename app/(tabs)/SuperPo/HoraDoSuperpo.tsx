@@ -13,7 +13,7 @@ import {useFocusEffect} from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import {getUsuarioId} from "@/utils/utils";
-import {styles} from './styles';
+import {styles} from "./styles"
 
 type Medicamento = {
     id_remedio: number;
@@ -40,30 +40,35 @@ export default function HoraDoSuperpo() {
     async function carregarUsosHoje() {
         if (!usuarioId) return;
 
-        const hoje = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
+        const agora = new Date();
 
-        console.log("📅 Buscando usos do dia:", hoje);
+        const inicioLocal = new Date(
+            agora.getFullYear(),
+            agora.getMonth(),
+            agora.getDate(),
+            0, 0, 0
+        );
+
+        const fimLocal = new Date(
+            agora.getFullYear(),
+            agora.getMonth(),
+            agora.getDate(),
+            23, 59, 59
+        );
 
         const { data, error } = await supabase
             .from("remedio_uso")
             .select("id_remedio, data_hora")
             .eq("id_usuario", usuarioId)
-            .eq("data_br", hoje);
+            .gte("data_hora", inicioLocal.toISOString())
+            .lte("data_hora", fimLocal.toISOString());
 
         if (error) {
-            console.error("❌ Erro ao buscar usos:", error);
+            console.error(error);
             return;
         }
 
-        const usos: usoHoje[] = data?.map(item => ({
-            id_remedio: item.id_remedio,
-            data_hora: item.data_hora,
-        })) ?? [];
-
-        console.log("✅ Remédios tomados hoje:", usos);
-
-        setUsosHoje(usos);
-        console.log(usos)
+        setUsosHoje(data ?? []);
     }
 
     async function carregarMedicamentos() {
