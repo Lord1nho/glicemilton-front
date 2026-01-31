@@ -6,7 +6,7 @@ import {getFoods, salvarResultadoPergunta, salvarSelecoes} from "@/lib/services/
 import {supabase} from "@/lib/supabase";
 import Loading from "@/app/components/Loading";
 import FinalResultModal from "@/app/components/DesafioMerenda/ModalEndGame";
-import {getEmoji} from "@/app/utils/utils";
+import {getEmoji, getUsuarioId} from "@/utils/utils";
 import { styles } from "@/app/(tabs)/DesafioMerenda/styles";
 
 export type Food = {
@@ -92,35 +92,21 @@ export default function FoodSelection() {
 
     useEffect(() => {
         async function init() {
-            // 1️⃣ carrega usuário
-            const { data: sessionData } = await supabase.auth.getSession();
+            const id = await getUsuarioId();
 
-            if (sessionData.session) {
-                const authId = sessionData.session.user.id;
-
-                const { data, error } = await supabase
-                    .from('usuarios')
-                    .select('id_usuario')
-                    .eq('auth_id', authId)
-                    .single();
-
-                if (error) {
-                    console.log('Erro ao buscar usuarioId:', error);
-                } else {
-                    setUsuarioId(data.id_usuario); // 👈 aqui nasce o usuarioId
-                }
+            if (id) {
+                setUsuarioId(id); // 👈 continua sendo state da tela
             }
 
-            // 2️⃣ carrega alimentos
             await loadFoods();
         }
 
         init();
     }, []);
 
-    console.log(foods);
 
     /*
+    console.log(foods);
     useEffect(() => {
         console.log("Selecionados:", selected);
     }, [selected]);

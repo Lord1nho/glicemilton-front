@@ -1,7 +1,8 @@
 import { useLocalSearchParams, router } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import {View, Text, TouchableOpacity, StyleSheet, ScrollView} from "react-native";
 import { supabase } from "@/lib/supabase";
+import {getUsuarioId} from "@/utils/utils";
 
 /* ================= TYPES ================= */
 
@@ -38,28 +39,13 @@ export default function Missao() {
 
     useEffect(() => {
         async function init() {
-            // 1️⃣ carrega sessão
-            const { data: sessionData } = await supabase.auth.getSession();
+            const id = await getUsuarioId();
 
-            if (!sessionData.session) return;
-
-            const authId = sessionData.session.user.id;
-
-            // 2️⃣ busca id_usuario
-            const { data: usuario, error: usuarioError } = await supabase
-                .from('usuarios')
-                .select('id_usuario')
-                .eq('auth_id', authId)
-                .single();
-
-            if (usuarioError || !usuario) {
-                console.log('Erro ao buscar usuarioId:', usuarioError);
-                return;
+            if (id) {
+                setUsuarioId(id); // 👈 continua sendo state da tela
             }
-
-            setUsuarioId(usuario.id_usuario);
-
         }
+
         init();
     }, []);
 
@@ -152,105 +138,167 @@ export default function Missao() {
 
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#e0f2fe", padding: 20 }}>
-            {/* HEADER */}
-            <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
-                {missao.titulo}
-            </Text>
-            <Text style={{ textAlign: "center", marginBottom: 12 }}>
-                Pergunta 1 de 1
-            </Text>
-
-            {/* DESCRIÇÃO */}
-            <View
-                style={{
-                    backgroundColor: "#f1f5f9",
-                    padding: 16,
-                    borderRadius: 12,
-                    marginBottom: 16,
-                }}
-            >
-                <Text style={{ textAlign: "center" }}>{missao.descricao}</Text>
-            </View>
-
-            {/* PERGUNTA */}
-            <View
-                style={{
-                    backgroundColor: "#fff",
-                    padding: 16,
-                    borderRadius: 12,
-                }}
-            >
-                <Text style={{ fontWeight: "bold", textAlign: "center" }}>
-                    {questao.enunciado}
+        <ScrollView>
+            <View style={{ flex: 1, backgroundColor: "#e0f2fe", padding: 20 }}>
+                {/* HEADER */}
+                <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
+                    {missao.titulo}
+                </Text>
+                <Text style={{ textAlign: "center", marginBottom: 12 }}>
+                    Pergunta 1 de 1
                 </Text>
 
-                {questao.alternativa_missao.map((alt, index) => {
-                    const ativa = selecionada?.id_alternativa === alt.id_alternativa;
-
-                    return (
-                        <TouchableOpacity
-                            key={alt.id_alternativa}
-                            disabled={confirmou}
-                            onPress={() => setSelecionada(alt)}
-                            style={{
-                                marginTop: 12,
-                                padding: 14,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                borderColor: ativa ? "#fb923c" : "#cbd5f5",
-                                backgroundColor: ativa ? "#ffedd5" : "#fff",
-                            }}
-                        >
-                            <Text>
-                                {String.fromCharCode(65 + index)} – {alt.texto}
-                            </Text>
-                        </TouchableOpacity>
-                    );
-                })}
-            </View>
-
-            {/* FEEDBACK */}
-            {confirmou && selecionada && (
+                {/* DESCRIÇÃO */}
                 <View
                     style={{
-                        marginTop: 20,
+                        backgroundColor: "#f1f5f9",
                         padding: 16,
                         borderRadius: 12,
-                        backgroundColor: selecionada.correta
-                            ? "#dcfce7"
-                            : "#fef3c7",
+                        marginBottom: 16,
                     }}
                 >
-                    <Text style={{ textAlign: "center" }}>
-                        {selecionada.correta
-                            ? "✔️ Resposta correta!"
-                            : "💡 Escolher alimentos mais equilibrados ajuda a manter a glicemia controlada."}
-                    </Text>
+                    <Text style={{ textAlign: "center" }}>{missao.descricao}</Text>
                 </View>
-            )}
 
-            {/* BOTÕES */}
-            <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginTop: 24,
-                }}
-            >
-                <TouchableOpacity onPress={() => router.back()}>
-                    <Text>← Voltar</Text>
-                </TouchableOpacity>
+                {/* PERGUNTA */}
+                <View
+                    style={{
+                        backgroundColor: "#fff",
+                        padding: 16,
+                        borderRadius: 12,
+                    }}
+                >
+                    <Text style={{ fontWeight: "bold", textAlign: "center" }}>
+                        {questao.enunciado}
+                    </Text>
 
-                {!confirmou ? ( <TouchableOpacity onPress={confirmar}> <Text style={{ color: "#ea580c", fontWeight: "bold" }}> Confirmar </Text> </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity onPress={finalizar}>
-                        <Text style={{ color: "#ea580c", fontWeight: "bold" }}>
-                            Finalizar →
+                    {questao.alternativa_missao.map((alt, index) => {
+                        const ativa = selecionada?.id_alternativa === alt.id_alternativa;
+
+                        return (
+                            <TouchableOpacity
+                                key={alt.id_alternativa}
+                                disabled={confirmou}
+                                onPress={() => setSelecionada(alt)}
+                                style={{
+                                    marginTop: 12,
+                                    padding: 14,
+                                    borderRadius: 10,
+                                    borderWidth: 1,
+                                    borderColor: ativa ? "#fb923c" : "#cbd5f5",
+                                    backgroundColor: ativa ? "#ffedd5" : "#fff",
+                                }}
+                            >
+                                <Text>
+                                    {String.fromCharCode(65 + index)} – {alt.texto}
+                                </Text>
+                            </TouchableOpacity>
+                        );
+                    })}
+                </View>
+
+                {/* FEEDBACK */}
+                {confirmou && selecionada && (
+                    <View
+                        style={{
+                            marginTop: 20,
+                            padding: 16,
+                            borderRadius: 12,
+                            backgroundColor: selecionada.correta
+                                ? "#dcfce7"
+                                : "#fef3c7",
+                        }}
+                    >
+                        <Text style={{ textAlign: "center" }}>
+                            {selecionada.correta
+                                ? "✔️ Resposta correta!"
+                                : "💡 Escolher alimentos mais equilibrados ajuda a manter a glicemia controlada."}
                         </Text>
-                    </TouchableOpacity>
+                    </View>
                 )}
+
+                {/* BOTÕES */}
+                <View style={styles.footerActions}>
+                    <TouchableOpacity
+                        style={styles.backButton}
+                        onPress={()=>router.back()}
+                    >
+                        <Text style={styles.backText}>← Voltar</Text>
+                    </TouchableOpacity>
+
+                    {!confirmou ? (
+                        <TouchableOpacity
+                            style={styles.confirmButton}
+                            onPress={confirmar}
+                        >
+                            <Text style={styles.confirmText}>Confirmar</Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity
+                            style={styles.confirmButton}
+                            onPress={finalizar}
+                        >
+                            <Text style={styles.confirmText}>Finalizar</Text>
+                        </TouchableOpacity>
+                    )}
+                </View>
             </View>
-        </View>
+        </ScrollView>
+
     );
 }
+
+
+
+const styles = StyleSheet.create({
+    footerActions: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        gap: 12,
+        backgroundColor: "#DFF4FF",
+    },
+
+    backButton: {
+        flex: 1,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 18,
+        paddingVertical: 14,
+        alignItems: "center",
+
+        // sombra leve
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+        elevation: 2,
+    },
+
+    backText: {
+        color: "#1E40AF",
+        fontWeight: "700",
+        fontSize: 15,
+    },
+
+    confirmButton: {
+        flex: 1,
+        backgroundColor: "#FB923C", // laranja
+        borderRadius: 18,
+        paddingVertical: 14,
+        alignItems: "center",
+
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        elevation: 3,
+    },
+
+    confirmText: {
+        color: "#FFFFFF",
+        fontWeight: "700",
+        fontSize: 15,
+    },
+})

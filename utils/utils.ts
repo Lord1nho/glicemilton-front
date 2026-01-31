@@ -36,3 +36,26 @@ const emojiPorAlimento: Record<number, string> = {
 export function getEmoji(id_alimento: number): string {
     return emojiPorAlimento[id_alimento] ?? "🍽️";
 }
+
+import { supabase } from "@/lib/supabase";
+
+export async function getUsuarioId(): Promise<number | null> {
+    const { data: sessionData } = await supabase.auth.getSession();
+
+    if (!sessionData.session) return null;
+
+    const authId = sessionData.session.user.id;
+
+    const { data, error } = await supabase
+        .from("usuarios")
+        .select("id_usuario")
+        .eq("auth_id", authId)
+        .single();
+
+    if (error || !data) {
+        console.log("Erro ao buscar usuarioId:", error);
+        return null;
+    }
+
+    return data.id_usuario;
+}
