@@ -1,73 +1,79 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { User, Lock } from "lucide-react-native";
 import {router, useRouter} from "expo-router";
+import {ImageBackground} from "expo-image";
 
 export default function RegisterScreen() {
 
     const router = useRouter();
     return (
-        <View style={styles.container}>
 
-            {/* HEADER */}
-            <View style={styles.header}>
-                <Text style={styles.title}>Bem-vindo 👋</Text>
-                <Text style={styles.subtitle}>
-                    Entre para continuar cuidando do Glicemilton
-                </Text>
-            </View>
+        <ImageBackground
+            source={require("../../../assets/glicemiltonfoto.png")}
+            style={styles. container}
+            contentFit="fill"
+        >
 
-            {/* CARD LOGIN */}
-            <View style={styles.card}>
+                {/* HEADER */}
 
-                <View style={styles.inputWrapper}>
-                    <User color="#64748b" size={20} />
-                    <TextInput
-                        placeholder="Nome"
-                        placeholderTextColor="#94a3b8"
-                        style={styles.input}
-                        autoCapitalize="none"
-                    />
+                {/* CARD LOGIN */}
+                <View style={styles.card}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Bem-vindo 👋</Text>
+                        <Text style={styles.subtitle}>
+                            Cadastre para cuidar do Glicemilton!
+                        </Text>
+                    </View>
+                    <View style={styles.inputWrapper}>
+                        <User color="#64748b" size={20} />
+                        <TextInput
+                            placeholder="Nome"
+                            placeholderTextColor="#94a3b8"
+                            style={styles.input}
+                            autoCapitalize="none"
+                        />
+                    </View>
+
+                    {/* EMAIL */}
+                    <View style={styles.inputWrapper}>
+                        <User color="#64748b" size={20} />
+                        <TextInput
+                            placeholder="E-mail"
+                            placeholderTextColor="#94a3b8"
+                            style={styles.input}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                        />
+                    </View>
+
+                    {/* SENHA */}
+                    <View style={styles.inputWrapper}>
+                        <Lock color="#64748b" size={20} />
+                        <TextInput
+                            placeholder="Senha"
+                            placeholderTextColor="#94a3b8"
+                            style={styles.input}
+                            secureTextEntry
+                        />
+                    </View>
+
+                    {/* BOTÃO LOGIN */}
+                    <TouchableOpacity style={styles.loginButton}>
+                        <Text style={styles.loginButtonText}>Cadastrar</Text>
+                    </TouchableOpacity>
+
+                    {/* DIVISOR */}
+                    <Text style={styles.orText}>ou</Text>
+
+                    {/* Voltar */}
+                    <TouchableOpacity style={styles.registerButton} onPress={() => router.back()}>
+                        <Text style={styles.registerButtonText}>
+                            Voltar
+                        </Text>
+                    </TouchableOpacity>
                 </View>
+        </ImageBackground>
 
-                {/* EMAIL */}
-                <View style={styles.inputWrapper}>
-                    <User color="#64748b" size={20} />
-                    <TextInput
-                        placeholder="E-mail"
-                        placeholderTextColor="#94a3b8"
-                        style={styles.input}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                </View>
-
-                {/* SENHA */}
-                <View style={styles.inputWrapper}>
-                    <Lock color="#64748b" size={20} />
-                    <TextInput
-                        placeholder="Senha"
-                        placeholderTextColor="#94a3b8"
-                        style={styles.input}
-                        secureTextEntry
-                    />
-                </View>
-
-                {/* BOTÃO LOGIN */}
-                <TouchableOpacity style={styles.loginButton}>
-                    <Text style={styles.loginButtonText}>Cadastrar</Text>
-                </TouchableOpacity>
-
-                {/* DIVISOR */}
-                <Text style={styles.orText}>ou</Text>
-
-                {/* Voltar */}
-                <TouchableOpacity style={styles.registerButton} onPress={() => router.back()}>
-                    <Text style={styles.registerButtonText}>
-                        Voltar
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </View>
     );
 }
 
@@ -75,7 +81,6 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#e6f7fb",
         justifyContent: "center",
         paddingHorizontal: 20,
     },
@@ -99,7 +104,7 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        backgroundColor: "#ffffff",
+        backgroundColor: "rgba(255, 255, 255, 0.75)",
         borderRadius: 18,
         padding: 20,
     },

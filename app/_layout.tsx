@@ -5,11 +5,7 @@ import Toast from "react-native-toast-message";
 export default function RootLayout() {
     return (
         <>
-        <LinearGradient colors={['blue', 'white']} style={{ flex: 1 }}>
             <Stack screenOptions={{ headerShown: false }}/>
-
-
-        </LinearGradient>
             <Toast />
         </>
     );

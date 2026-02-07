@@ -1,15 +1,18 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator} from "react-native";
 import { User, Lock } from "lucide-react-native";
 import {useRouter} from "expo-router";
 import {supabase} from "@/lib/supabase";
 import {useState} from "react";
+import {ImageBackground} from "expo-image";
 
 export default function Login() {
     const router = useRouter();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const  [loading, setLoading] = useState<boolean>(false);
 
     async function handleLogin(email: string, password: string) {
+        setLoading(true);
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
@@ -17,6 +20,7 @@ export default function Login() {
 
         if (error) {
             alert(error.message);
+            setLoading(false);
             return;
         }
 
@@ -25,65 +29,77 @@ export default function Login() {
     }
 
     return (
-        <View style={styles.container}>
+        <ImageBackground
+            source={require("../../../assets/glicemiltonfoto.png")}
+            style={styles.container}
+            contentFit="fill"
+        >
+            {loading ? (
+                // 🔵 LOADING
+                <ActivityIndicator size="large" color="#2563eb" />
+            ) : (
+                // 🟢 CARD NORMAL
+                <View style={styles.card}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>Bem-vindo 👋</Text>
+                        <Text style={styles.subtitle}>
+                            Entre para continuar cuidando do Glicemilton
+                        </Text>
+                    </View>
 
-            {/* HEADER */}
-            <View style={styles.header}>
-                <Text style={styles.title}>Bem-vindo 👋</Text>
-                <Text style={styles.subtitle}>
-                    Entre para continuar cuidando do Glicemilton
-                </Text>
-            </View>
+                    <View style={styles.inputWrapper}>
+                        <User color="#64748b" size={20} />
+                        <TextInput
+                            placeholder="E-mail"
+                            placeholderTextColor="#94a3b8"
+                            onChangeText={setEmail}
+                            style={styles.input}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            editable={!loading}
+                        />
+                    </View>
 
-            {/* CARD LOGIN */}
-            <View style={styles.card}>
+                    <View style={styles.inputWrapper}>
+                        <Lock color="#64748b" size={20} />
+                        <TextInput
+                            placeholder="Senha"
+                            onChangeText={setPassword}
+                            placeholderTextColor="#94a3b8"
+                            style={styles.input}
+                            secureTextEntry
+                            editable={!loading}
+                        />
+                    </View>
 
-                {/* EMAIL */}
-                <View style={styles.inputWrapper}>
-                    <User color="#64748b" size={20} />
-                    <TextInput
-                        placeholder="E-mail"
-                        placeholderTextColor="#94a3b8"
-                        onChangeText={setEmail}
-                        style={styles.input}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
+                    <TouchableOpacity>
+                        <Text style={styles.forgotText}>Esqueci minha senha</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.loginButton}
+                        onPress={() => handleLogin(email, password)}
+                        disabled={loading}
+                    >
+                        <Text style={styles.loginButtonText}>Entrar</Text>
+                    </TouchableOpacity>
+
+                    <Text style={styles.orText}>ou</Text>
+
+                    <TouchableOpacity
+                        style={styles.registerButton}
+                        onPress={() => router.push('/(auth)/Register')}
+                        disabled={loading}
+                    >
+                        <Text style={styles.registerButtonText}>
+                            Criar uma conta
+                        </Text>
+                    </TouchableOpacity>
                 </View>
+            )}
+        </ImageBackground>
 
-                {/* SENHA */}
-                <View style={styles.inputWrapper}>
-                    <Lock color="#64748b" size={20} />
-                    <TextInput
-                        placeholder="Senha"
-                        onChangeText={setPassword}
-                        placeholderTextColor="#94a3b8"
-                        style={styles.input}
-                        secureTextEntry
-                    />
-                </View>
 
-                {/* ESQUECI A SENHA */}
-                <TouchableOpacity>
-                    <Text style={styles.forgotText}>Esqueci minha senha</Text>
-                </TouchableOpacity>
-
-                {/* BOTÃO LOGIN */}
-                <TouchableOpacity style={styles.loginButton}  onPress={() => handleLogin(email, password)}>
-                    <Text style={styles.loginButtonText}>Entrar</Text>
-                </TouchableOpacity>
-
-                {/* DIVISOR */}
-                <Text style={styles.orText}>ou</Text>
-
-                {/* CADASTRO */}
-                <TouchableOpacity style={styles.registerButton} onPress={() => router.push('/(auth)/Register')}>
-                    <Text style={styles.registerButtonText}>
-                        Criar uma conta
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </View>
     );
 }
 
@@ -91,7 +107,6 @@ export default function Login() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#e6f7fb",
         justifyContent: "center",
         paddingHorizontal: 20,
     },
@@ -115,7 +130,7 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        backgroundColor: "#ffffff",
+        backgroundColor: "rgba(255, 255, 255, 0.75)",
         borderRadius: 18,
         padding: 20,
     },

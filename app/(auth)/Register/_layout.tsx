@@ -2,7 +2,7 @@ import { Stack, Slot } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from "react-native-toast-message";
 
-export default function LoginLayout() {
+export default function RegisterLayout() {
     return (
         <Stack screenOptions={{ headerShown: false }} />
     );
