@@ -60,3 +60,32 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+ ```
+
+Estrutura do Banco de Dados (SQL – Supabase)
+
+A estrutura lógica do banco de dados utilizada pela aplicação está documentada por meio de scripts SQL, sem conter dados reais ou credenciais de acesso.
+
+Os arquivos encontram-se no diretório:
+```sqlSupabase/```
+
+###  Tabelas 
+
+O arquivo abaixo contém os comandos CREATE TABLE, constraints e índices que definem a estrutura das tabelas do sistema:
+
+```sqlSupabase/sql_tabelas.sql```
+
+
+Esse arquivo descreve entidades como usuários, missões, atividades físicas, registros de glicemia, medicação, humor diário e demais componentes necessários ao funcionamento da aplicação.
+
+### Views
+
+As views utilizadas pelo sistema estão descritas separadamente no arquivo:
+
+```sqlSupabase/views.sql```
+
+Esse arquivo contém apenas comandos CREATE VIEW ou CREATE OR REPLACE VIEW, responsáveis por organizar e simplificar consultas utilizadas pela aplicação.
+
+Observação
+
+Os arquivos SQL incluídos no projeto representam apenas a estrutura lógica do banco de dados, sendo utilizados para fins de documentação, reprodutibilidade e registro do software. Nenhum dado sensível ou informação de acesso ao Supabase é armazenado nesses scripts.
