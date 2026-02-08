@@ -1,10 +1,27 @@
 import {router, Tabs} from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import {Text,TouchableOpacity} from "react-native";
+import {ActivityIndicator, Text, TouchableOpacity, View} from "react-native";
 import {supabase} from "@/lib/supabase";
 import { LinearGradient } from "expo-linear-gradient";
+import {useEffect, useState} from "react";
 
 export default function TabsLayout() {
+
+    const [checkingSession, setCheckingSession] = useState(true);
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data } = await supabase.auth.getSession();
+
+            if (!data.session) {
+                router.replace('/(auth)/Login');
+            }
+
+            setCheckingSession(false);
+        };
+
+        checkSession();
+    }, []);
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
@@ -20,6 +37,15 @@ export default function TabsLayout() {
         // se for React Navigation puro:
         // navigation.reset({ index: 0, routes: [{ name: "Login" }] });
     };
+
+    if (checkingSession) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
+    }
+
     return (
             <Tabs
                 screenOptions={{
