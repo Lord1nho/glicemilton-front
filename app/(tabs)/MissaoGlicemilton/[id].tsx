@@ -10,6 +10,7 @@ type Alternativa = {
     id_alternativa: number;
     texto: string;
     correta: boolean;
+    feedback: string | null; // 👈 ADICIONA ISSO
 };
 
 type Questao = {
@@ -68,7 +69,8 @@ export default function Missao() {
           alternativa_missao (
             id_alternativa,
             texto,
-            correta
+            correta,
+            feedback
           )
         )
       `)
@@ -212,7 +214,7 @@ export default function Missao() {
                         <Text style={{ textAlign: "center" }}>
                             {selecionada.correta
                                 ? "✔️ Resposta correta!"
-                                : "💡 Escolher alimentos mais equilibrados ajuda a manter a glicemia controlada."}
+                                : ` 🚨Resposta errada.! ${selecionada.feedback}`}
                         </Text>
                     </View>
                 )}

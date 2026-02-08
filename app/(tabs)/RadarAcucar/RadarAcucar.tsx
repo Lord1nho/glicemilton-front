@@ -215,17 +215,17 @@ export default function RadarAcucar() {
 
                         baixa: {
                             title: 'Glicemia Baixa',
-                            subtitle: 'Está um pouco abaixo do normal.',
+                            subtitle: 'Sua glicemia está abaixo do ideal. Consuma uma fonte rápida de açúcar, como suco ou glicose, e evite esforços físicos até se sentir melhor.',
                             color: '#FF9500',
                         },
                         normal: {
                             title: 'Glicemia Normal',
-                            subtitle: 'Está tudo dentro do esperado.',
+                            subtitle: 'Sua glicemia está dentro da faixa ideal. Continue mantendo uma alimentação equilibrada e seguindo sua rotina de cuidados.',
                             color: '#34C759',
                         },
                         alta: {
                             title: 'Glicemia Alta',
-                            subtitle: 'Está um pouco acima do normal.',
+                            subtitle: 'Sua glicemia está acima do recomendado. Mantenha-se hidratado, siga corretamente a medicação e, se necessário, procure orientação profissional.',
                             color: '#FF3B30',
                         },
                     }[classificacao];
