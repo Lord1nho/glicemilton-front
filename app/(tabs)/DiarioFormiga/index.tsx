@@ -9,7 +9,7 @@ import {MOOD_MESSAGES, MOOD_STATES, MoodState} from "@/app/components/DiarioForm
 import {styles} from './styles';
 
 
-export default function DiarioFormiga() {
+export default function Index() {
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [estadoSelecionado, setEstadoSelecionado] = useState<MoodState | null>(null);
     const [jaRegistradoHoje, setJaRegistradoHoje] = useState(false);

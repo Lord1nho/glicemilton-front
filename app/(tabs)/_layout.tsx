@@ -21,10 +21,6 @@ export default function TabsLayout() {
         // navigation.reset({ index: 0, routes: [{ name: "Login" }] });
     };
     return (
-        <LinearGradient
-            colors={["#2563eb", "#e6f7fb"]}
-            style={{ flex: 1 }}
-        >
             <Tabs
                 screenOptions={{
                     headerShown: true,
@@ -249,7 +245,6 @@ export default function TabsLayout() {
                     }}
                 />
             </Tabs>
-        </LinearGradient>
 
     );
 }

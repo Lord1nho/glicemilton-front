@@ -19,7 +19,7 @@ type Cuidados = {
     data: string | null;
 };
 
-export default function EscudoProtetor() {
+export default function Index() {
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [cuidados, setCuidados] = useState<Cuidados[]>([]);
 
