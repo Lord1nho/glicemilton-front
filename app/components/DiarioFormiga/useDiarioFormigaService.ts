@@ -5,7 +5,7 @@ import { Alert } from "react-native";
 import { MoodState, MOOD_STATES } from "../DiarioFormiga/mood"
 import {useFocusEffect} from "expo-router";
 
-export function useDiarioFormigaService() {
+export default function useDiarioFormigaService() {
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [estadoSelecionado, setEstadoSelecionado] =
         useState<MoodState | null>(null);

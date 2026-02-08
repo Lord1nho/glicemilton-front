@@ -196,7 +196,7 @@ export default function HoraDoSuperpo() {
             <View style={styles.header}>
                 <Ionicons name="bug-outline" size={28} color="#FF8A00" />
                 <View>
-                    <Text style={styles.headerTitle}>Hora do Superpó</Text>
+                    <Text style={styles.headerTitle}>Ritual da Saúde</Text>
                     <Text style={styles.headerSubtitle}>
                         Gerencie seus medicamentos
                     </Text>
