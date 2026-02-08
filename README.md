@@ -42,6 +42,18 @@ To learn more about developing your project with Expo, look at the following res
 - [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
+## Configuração do Supabase (Variáveis de Ambiente)
+
+Este projeto utiliza o Supabase como backend. Para que a aplicação funcione corretamente, é necessário configurar as variáveis de ambiente.
+
+### 1. Crie um arquivo `.env`
+
+Na raiz do projeto, crie um arquivo chamado `.env` com o seguinte conteúdo:
+
+```env
+EXPO_PUBLIC_SUPABASE_URL=https://sua-url-do-supabase.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anon-publica
+
 ## Join the community
 
 Join our community of developers creating universal apps.
