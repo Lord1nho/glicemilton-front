@@ -31,7 +31,7 @@ type ActivityToday = {
 };
 
 
-export default function EnergiaScreen() {
+export default function EnergyScreen() {
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [activities, setActivities] = useState<Activity[]>([]);
     const [activitiesToday, setActivitiesToday] = useState<ActivityToday[]>([]);
@@ -107,7 +107,7 @@ export default function EnergiaScreen() {
 
         Toast.show({
             type: "success",
-            text1: "Atividade Salva! Continue assim!",
+            text1: "Activity saved! Keep it up!",
         });
         await carregarActivitiesToday();
     }
@@ -153,25 +153,25 @@ export default function EnergiaScreen() {
             <ScrollView contentContainerStyle={styles.content}>
                 {/* Header */}
                 <View style={styles.header}>
-                    <HintCard text={"Registre suas atividades físicas"} />
+                    <HintCard text={"Log your physical activities"} />
                 </View>
 
-                {/* Card Energia */}
+                {/* Card Energy */}
                 <View style={styles.energyCard}>
                     <Text style={styles.energyIcon}>⚡</Text>
-                    <Text style={styles.energyTitle}>Energia do Glicemilton</Text>
+                    <Text style={styles.energyTitle}>Glicemilton&apos;s Energy</Text>
                     <Text style={styles.energySubtitle}>
                         💪 {
                         totalpointsToday === 0
-                            ? "Registre suas atividades físicas"
+                            ? "Log your physical activities"
                             : totalpointsToday >= 100
-                                ? "🎉 Parabéns, meta diária alcançada!"
-                                : "Bom progresso, continue assim!"
+                                ? "🎉 Congratulations, daily goal reached!"
+                                : "Good progress, keep going!"
                     }
                     </Text>
 
                     <View style={styles.progressHeader}>
-                        <Text style={styles.progressLabel}>Meta diária</Text>
+                        <Text style={styles.progressLabel}>Daily goal</Text>
                         <Text style={styles.progressValue}>{totalpointsToday}/100</Text>
                     </View>
 
@@ -195,20 +195,20 @@ export default function EnergiaScreen() {
                     <View style={styles.statCard}>
                         <Text style={styles.statIcon}>🎯</Text>
                         <Text style={styles.statValue}>{activitiesToday.length}</Text>
-                        <Text style={styles.statLabel}>Atividades hoje</Text>
+                        <Text style={styles.statLabel}>Activities today</Text>
                     </View>
 
                     <View style={styles.statCard}>
                         <Text style={styles.statIcon}>🟢</Text>
                         <Text style={styles.statValue}>{totalpointsToday}</Text>
-                        <Text style={styles.statLabel}>Pontos de energia</Text>
+                        <Text style={styles.statLabel}>Energy points</Text>
                     </View>
                 </View>
 
                 {/* Registrar atividade */}
                 <View style={styles.registerHeader}>
                     <Text style={styles.registerIcon}>＋</Text>
-                    <Text style={styles.registerText}>Registrar Atividade</Text>
+                    <Text style={styles.registerText}>Log Activity</Text>
                 </View>
 
                 {/* Cards de atividades */}
@@ -232,7 +232,7 @@ export default function EnergiaScreen() {
                                     onPress={() => markActivity(item)}
                                 >
                                     <Text style={styles.energyButtonText}>
-                                        {doneToday ? "✔ Concluído" : `+${item.points} ⚡`}
+                                        {doneToday ? "✔ Completed" : `+${item.points} ⚡`}
                                     </Text>
                                 </TouchableOpacity>
                             </View>

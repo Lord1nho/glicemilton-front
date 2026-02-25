@@ -8,22 +8,22 @@ type Props = {
 
 function getMessage (score: number) {
     if (score === 300) {
-        return "Acertou todas as perguntas! Glicemilton está orgulhoso 🥰🐜"
+        return "You got every question right! Glicemilton is proud 🥰🐜"
     }
 
     if (score >= 200) {
-        return "Glicemilton está MUITO orgulhoso de você! Boas escolhas 🌟🐜";
+        return "Glicemilton is VERY proud of you! Great choices 🌟🐜";
     }
 
     if (score >=100 && score < 200) {
-        return "Glicemilton está orgulhoso de você! Continue assim 😊🐜";
+        return "Glicemilton is proud of you! Keep it up 😊🐜";
     }
 
     if (score >= 50 && score < 100 ) {
-        return "Bom trabalho! Dá pra melhorar! 💪🐜";
+        return "Good work! You can improve even more! 💪🐜";
     }
 
-    return "Vamos tentar de novo? Glicemilton acredita em você! 🍎🐜";
+    return "Want to try again? Glicemilton believes in you! 🍎🐜";
 }
 
 export default function FinalResultModal({ visible, score, onRestart }: Props) {
@@ -37,14 +37,14 @@ export default function FinalResultModal({ visible, score, onRestart }: Props) {
                 <View style={styles.modal}>
                     <Text style={styles.trophy}>🏆</Text>
 
-                    <Text style={styles.title}>Parabéns!</Text>
+                    <Text style={styles.title}>Congratulations!</Text>
                     <Text style={styles.subtitle}>
-                        Você terminou o Desafio da Merenda!
+                        Você terminou o Snack Challenge!
                     </Text>
 
                     <View style={styles.scoreBox}>
                         <Text style={styles.scoreLabel}>
-                            Pontuação Final:
+                            Final score:
                         </Text>
                         <Text style={styles.scoreValue}>
                             {score}
@@ -59,7 +59,7 @@ export default function FinalResultModal({ visible, score, onRestart }: Props) {
                         onPress={onRestart}
                     >
                         <Text style={styles.buttonText}>
-                            Jogar novamente
+                            Play again
                         </Text>
                     </TouchableOpacity>
                 </View>

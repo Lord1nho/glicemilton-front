@@ -41,9 +41,9 @@ export default function Login() {
                 // 🟢 CARD NORMAL
                 <View style={styles.card}>
                     <View style={styles.header}>
-                        <Text style={styles.title}>Bem-vindo 👋</Text>
+                        <Text style={styles.title}>Welcome 👋</Text>
                         <Text style={styles.subtitle}>
-                            Entre para continuar cuidando do Glicemilton
+                            Sign in to keep caring for Glicemilton
                         </Text>
                     </View>
 
@@ -63,7 +63,7 @@ export default function Login() {
                     <View style={styles.inputWrapper}>
                         <Lock color="#64748b" size={20} />
                         <TextInput
-                            placeholder="Senha"
+                            placeholder="Password"
                             onChangeText={setPassword}
                             placeholderTextColor="#94a3b8"
                             style={styles.input}
@@ -73,7 +73,7 @@ export default function Login() {
                     </View>
 
                     <TouchableOpacity>
-                        <Text style={styles.forgotText}>Esqueci minha senha</Text>
+                        <Text style={styles.forgotText}>Forgot my password</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -81,10 +81,10 @@ export default function Login() {
                         onPress={() => handleLogin(email, password)}
                         disabled={loading}
                     >
-                        <Text style={styles.loginButtonText}>Entrar</Text>
+                        <Text style={styles.loginButtonText}>Sign in</Text>
                     </TouchableOpacity>
 
-                    <Text style={styles.orText}>ou</Text>
+                    <Text style={styles.orText}>or</Text>
 
                     <TouchableOpacity
                         style={styles.registerButton}
@@ -92,7 +92,7 @@ export default function Login() {
                         disabled={loading}
                     >
                         <Text style={styles.registerButtonText}>
-                            Criar uma conta
+                            Create an account
                         </Text>
                     </TouchableOpacity>
                 </View>

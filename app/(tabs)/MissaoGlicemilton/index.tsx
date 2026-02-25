@@ -69,7 +69,7 @@ export default function Index() {
         getMissions()
     }, [usuarioId]);
 
-    const missoesRespondidasHoje =
+    const missoesAnsweredsHoje =
         missao.filter(m => m.respondida_hoje).length;
 
     const pontuacaoMissoes =
@@ -81,17 +81,17 @@ export default function Index() {
 
             {/* HEADER */}
             <View style={styles.header}>
-                <Text style={styles.title}>Missão SOS Glicemilton</Text>
-                <Text style={styles.subtitle}>Histórias interativas para aprender</Text>
+                <Text style={styles.title}>SOS Glicemilton Mission</Text>
+                <Text style={styles.subtitle}>Interactive stories to learn</Text>
             </View>
 
             {/* CENTRO DE MISSÕES */}
             <View style={styles.centerCard}>
                 <BookOpen color="#2563eb" size={32} />
 
-                <Text style={styles.centerTitle}>Centro de Missões</Text>
+                <Text style={styles.centerTitle}>Centro de Missions</Text>
                 <Text style={styles.centerSubtitle}>
-                    Ajude Glicemilton a resolver situações do dia a dia!
+                    Help Glicemilton solve everyday situations!
                 </Text>
 
                 <View style={styles.stats}>
@@ -101,14 +101,14 @@ export default function Index() {
                     </View>
 
                     <View style={styles.statItem}>
-                        <Text style={[styles.statValue, { color: "#16a34a" }]}>{missoesRespondidasHoje}</Text>
-                        <Text style={styles.statLabel}>Missões</Text>
+                        <Text style={[styles.statValue, { color: "#16a34a" }]}>{missoesAnsweredsHoje}</Text>
+                        <Text style={styles.statLabel}>Missions</Text>
                     </View>
                 </View>
             </View>
 
             {/* MISSÕES */}
-            <Text style={styles.sectionTitle}>Missões Disponíveis</Text>
+            <Text style={styles.sectionTitle}>Missions Disponíveis</Text>
             {
                 missao.map(m => (
                     <MissionCard
@@ -169,7 +169,7 @@ function MissionCard({
                         disabled={respondida_hoje}
                     >
                         <Text style={styles.startButtonText}>
-                            {respondida_hoje ? "Respondida" : "Iniciar"}
+                            {respondida_hoje ? "Answered" : "Start"}
                         </Text>
                     </TouchableOpacity>
                 </View>

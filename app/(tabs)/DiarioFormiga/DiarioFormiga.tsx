@@ -52,7 +52,7 @@ export default function DiarioFormiga() {
 
     async function salvarNoDiario() {
         if (!estadoSelecionado) {
-            Alert.alert("Atenção", "Selecione como você está se sentindo primeiro.");
+            Alert.alert("Attention", "Select how you are feeling first.");
             return;
         }
 
@@ -65,11 +65,11 @@ export default function DiarioFormiga() {
 
         if (error) {
             console.error(error);
-            Alert.alert("Erro", "Não foi possível salvar no diário.");
+            Alert.alert("Erro", "Could not save in the diary.");
         } else {
             Toast.show({
                 type: "success",
-                text1: "Humor salvo no diário 💚",
+                text1: "Mood saved in your diary 💚",
             });
 
             setEstadoSelecionado(null);
@@ -155,30 +155,30 @@ export default function DiarioFormiga() {
 
             {/* HEADER */}
             <View style={styles.header}>
-                <Text style={styles.title}>Diário da Formiga Sábia</Text>
-                <Text style={styles.subtitle}>Como você está se sentindo?</Text>
+                <Text style={styles.title}>Wise Ant Diary</Text>
+                <Text style={styles.subtitle}>How are you feeling?</Text>
             </View>
 
             {/* ESTATÍSTICAS */}
             <View style={styles.statsCard}>
                 <BarChart2 color="#7c3aed" size={32} />
 
-                <Text style={styles.statsTitle}>Suas Estatísticas</Text>
+                <Text style={styles.statsTitle}>Your Stats</Text>
 
                 <View style={styles.statsRow}>
                     <Stat
                         value={String(stats.diasRegistrados)}
-                        label="Dias registrados"
+                        label="Days logged"
                         color="#f97316"
                     />
                     <Stat
                         value={String(stats.diasPositivos)}
-                        label="Dias positivos"
+                        label="Positive days"
                         color="#22c55e"
                     />
                     <Stat
                         value={`${stats.positividade}%`}
-                        label="Positividade"
+                        label="Positivity"
                         color="#eab308"
                     />
                 </View>
@@ -197,7 +197,7 @@ export default function DiarioFormiga() {
                 ) : (
                     // 👇 CASO AINDA NÃO TENHA REGISTRADO
                     <>
-                        <Text style={styles.sectionTitle}>💗 Como você está hoje?</Text>
+                        <Text style={styles.sectionTitle}>💗 How are you today?</Text>
 
                         <View style={styles.moodGrid}>
                             <MoodButton
@@ -256,14 +256,14 @@ export default function DiarioFormiga() {
                             ]}
                         >
                             <Heart color="#fff" size={16} />
-                            <Text style={styles.saveButtonText}>Salvar no Diário</Text>
+                            <Text style={styles.saveButtonText}>Save to Diary</Text>
                         </TouchableOpacity>
                     </>
                 )}
             </View>
 
             {/* HISTÓRICO */}
-            <Text style={styles.historyTitle}>📅 Histórico de Humor</Text>
+            <Text style={styles.historyTitle}>📅 Mood History</Text>
             {
                 historico.map((item) => {
                     const view = MOOD_MESSAGES[item.estado]
@@ -285,11 +285,9 @@ export default function DiarioFormiga() {
             {/* DICA */}
             <View style={styles.tipCard}>
                 <Text style={styles.tipIcon}>✨</Text>
-                <Text style={styles.tipTitle}>Dica da Formiga Sábia</Text>
+                <Text style={styles.tipTitle}>Wise Ant Tip</Text>
                 <Text style={styles.tipText}>
-                    &#34;Registrar suas emoções ajuda a entender padrões e cuidar melhor da sua
-                    saúde mental e física. Lembre-se: seus sentimentos são válidos e
-                    Glicemilton está sempre aqui para apoiar você!&#34;
+                    &#34;Tracking your emotions helps you understand patterns and care better for your mental and physical health. Remember: your feelings are valid, and Glicemilton is always here to support you!&#34;
                 </Text>
             </View>
         </ScrollView>
@@ -364,7 +362,7 @@ export function MoodDoneCard() {
             <CheckCircle size={36} color="#2E7D32" />
             <Text style={styles.doneTitle}>Registro de hoje completo!</Text>
             <Text style={styles.doneSubtitle}>
-                Volte amanhã para registrar como está se sentindo!
+                Come back tomorrow to log how you are feeling!
             </Text>
         </View>
     );

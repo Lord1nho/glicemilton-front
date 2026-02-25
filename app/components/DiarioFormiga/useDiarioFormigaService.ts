@@ -25,14 +25,14 @@ export default function useDiarioFormigaService() {
             const authId = sessionData.session.user.id;
 
             // 2️⃣ busca id_usuario
-            const {data: usuario, error: usuarioError} = await supabase
+            const {data: usuario, error: usuarioErrorr} = await supabase
                 .from('usuarios')
                 .select('id_usuario')
                 .eq('auth_id', authId)
                 .single();
 
-            if (usuarioError || !usuario) {
-                console.log('Erro ao buscar usuarioId:', usuarioError);
+            if (usuarioErrorr || !usuario) {
+                console.log('Error ao buscar usuarioId:', usuarioErrorr);
                 return;
             }
 
@@ -44,15 +44,15 @@ export default function useDiarioFormigaService() {
     }, []);
 
     async function carregarHistorico() {
-        const {data: humor, error: humorError} = await supabase
+        const {data: humor, error: humorErrorr} = await supabase
             .from('humor_diario')
             .select('data, estado')
             .eq('id_usuario', usuarioId)
             .order('data', {ascending: false})
             .limit(3);
 
-        if (humorError) {
-            console.error(humorError);
+        if (humorErrorr) {
+            console.error(humorErrorr);
         } else {
             console.log(humor)
             setHistorico(humor);
@@ -61,7 +61,7 @@ export default function useDiarioFormigaService() {
 
     async function salvarNoDiario() {
         if (!estadoSelecionado) {
-            Alert.alert("Atenção", "Selecione como você está se sentindo primeiro.");
+            Alert.alert("Attention", "Select how you are feeling first.");
             return;
         }
 
@@ -74,11 +74,11 @@ export default function useDiarioFormigaService() {
 
         if (error) {
             console.error(error);
-            Alert.alert("Erro", "Não foi possível salvar no diário.");
+            Alert.alert("Error", "Could not save in the diary.");
         } else {
             Toast.show({
                 type: "success",
-                text1: "Humor salvo no diário 💚",
+                text1: "Mood saved in your diary 💚",
             });
 
             setEstadoSelecionado(null);

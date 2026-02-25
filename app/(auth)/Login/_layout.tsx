@@ -12,7 +12,7 @@ export default function LoginLayout() {
         <Stack.Screen
             name="(main)/desafiomerenda"
             options={{
-              title: 'Desafio da Merenda',
+              title: 'Snack Challenge',
               headerTintColor: '#00264d',
               headerTitleStyle: {
                 fontWeight: 'bold',
