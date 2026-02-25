@@ -1,12 +1,12 @@
 export const MOOD_MESSAGES = {
-    FELIZ: "Que ótimo! Continue aproveitando esse momento 💛",
-    TRANQUILO: "Que bom estar em equilíbrio. Siga nesse ritmo 🌿",
-    NEUTRO: "Dias neutros também fazem parte. Vá com calma 🙂",
+    FELIZ: "Great! Keep enjoying this moment 💛",
+    TRANQUILO: "It's great to be balanced. Keep this pace 🌿",
+    NEUTRO: "Neutral days are part of life too. Take it easy 🙂",
     CANSADO: "Talvez seja um bom momento para descansar um pouco 😴",
     ANSIOSO: "Respire fundo. Tudo acontece no seu tempo 🌬️",
-    TRISTE: "Você não está sozinho. Seja gentil com você hoje 💙",
+    TRISTE: "You are not alone. Be kind to yourself today 💙",
     ESTRESSADO: "Pausas ajudam mais do que parecem. Cuide-se ⚠️",
-    DOENTE: "Vamos cuidar de você! 🩺",
+    DOENTE: "Let's take care of you! 🩺",
 } as const;
 
 export const MOOD_STATES = {

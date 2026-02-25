@@ -27,21 +27,21 @@ const messagesGlicemia: message[] = [
     {
         id: 1,
         title: 'Glicemia Baixa!',
-        message: 'Glicemilton precisa de atenção! Coma algo doce',
+        message: 'Glicemilton needs attention! Eat something sweet',
         value: 54
     },
 
     {
         id: 2,
         title: 'Glicemia Normal!',
-        message: 'Glicemilton está tranquilo! Continue assim!',
+        message: 'Glicemilton is calm! Keep it up!',
         value: 72
     },
 
     {
         id: 3,
         title: 'Glicemia Alta!',
-        message: 'Glicemilton está preocupado. Consulte seu médico!',
+        message: 'Glicemilton is worried. Consult your doctor!',
         value: 54
     },
 ]
@@ -50,7 +50,7 @@ type Periodo = 1 | 2 | 3;
 
 const PERIODOS: Record<Periodo, string> = {
     1: 'Jejum',
-    2: 'Após refeição',
+    2: 'After meal',
     3: 'Antes de dormir',
 };
 
@@ -74,7 +74,7 @@ const classificarGlicemia = (
         return 'normal';
     }
 
-    if (periodo === 2) { // Após refeição
+    if (periodo === 2) { // After meal
         if (valor < 80) return 'baixa';
         if (valor > 140) return 'alta';
         return 'normal';
@@ -107,19 +107,19 @@ export default function RadarAcucar() {
         }
 
         if (!periodo) {
-            alert('Selecione o período');
+            alert('Select the period');
             return;
         }
 
         if (!usuarioId) {
-            alert('Usuário não identificado');
+            alert('User not identified');
             return;
         }
 
         const valor = parseFloat(valueGlicemy.replace(",", "."));
 
         if (isNaN(valor)) {
-            alert('Valor inválido');
+            alert('Invalid value');
             return;
         }
 
@@ -215,17 +215,17 @@ export default function RadarAcucar() {
 
                         baixa: {
                             title: 'Glicemia Baixa',
-                            subtitle: 'Sua glicemia está abaixo do ideal. Consuma uma fonte rápida de açúcar, como suco ou glicose, e evite esforços físicos até se sentir melhor.',
+                            subtitle: 'Your blood glucose is below the ideal range. Consume a quick sugar source, such as juice or glucose, and avoid physical effort until you feel better.',
                             color: '#FF9500',
                         },
                         normal: {
                             title: 'Glicemia Normal',
-                            subtitle: 'Sua glicemia está dentro da faixa ideal. Continue mantendo uma alimentação equilibrada e seguindo sua rotina de cuidados.',
+                            subtitle: 'Your blood glucose is within the ideal range. Keep a balanced diet and continue your care routine.',
                             color: '#34C759',
                         },
                         alta: {
                             title: 'Glicemia Alta',
-                            subtitle: 'Sua glicemia está acima do recomendado. Mantenha-se hidratado, siga corretamente a medicação e, se necessário, procure orientação profissional.',
+                            subtitle: 'Your blood glucose is above the recommended range. Stay hydrated, follow your medication correctly, and seek professional guidance if needed.',
                             color: '#FF3B30',
                         },
                     }[classificacao];
@@ -257,7 +257,7 @@ export default function RadarAcucar() {
                     <Ionicons name="bar-chart-outline" size={40} color="#2F80ED" />
                     <Text style={styles.highlightTitle}>Registre sua glicemia</Text>
                     <Text style={styles.highlightSubtitle}>
-                        Ajude o Glicemilton a monitorar sua saúde!
+                        Help Glicemilton monitor his health!
                     </Text>
                 </View>
 
@@ -280,7 +280,7 @@ export default function RadarAcucar() {
                         maxLength={3}
                     />
 
-                    <Text style={styles.label}>Período</Text>
+                    <Text style={styles.label}>Period</Text>
 
                     <View style={styles.select}>
                         <Picker
@@ -290,7 +290,7 @@ export default function RadarAcucar() {
                             dropdownIconColor="#666"
                         >
                             <Picker.Item label="Em jejum" value={1} />
-                            <Picker.Item label="Após refeição" value={2} />
+                            <Picker.Item label="After meal" value={2} />
                             <Picker.Item label="Antes de dormir" value={3} />
                         </Picker>
                     </View>
@@ -305,7 +305,7 @@ export default function RadarAcucar() {
                 <View style={styles.card}>
                     <View style={styles.cardTitleRow}>
                         <Ionicons name="clipboard-outline" size={18} color="#000" />
-                        <Text style={styles.cardTitle}>Faixas de Referência</Text>
+                        <Text style={styles.cardTitle}>Reference Ranges</Text>
                     </View>
 
                     <View style={styles.rangeRow}>
@@ -314,7 +314,7 @@ export default function RadarAcucar() {
                     </View>
 
                     <View style={styles.rangeRow}>
-                        <Text style={styles.rangeLabel}>Após refeição:</Text>
+                        <Text style={styles.rangeLabel}>After meal:</Text>
                         <Text style={styles.rangeValue}>80-140 mg/dL</Text>
                     </View>
 
@@ -326,7 +326,7 @@ export default function RadarAcucar() {
                 <View style={styles.card}>
                     <View style={styles.cardTitleRow}>
                         <Ionicons name="time-outline" size={18} color="#000" />
-                        <Text style={styles.cardTitle}>Últimos Registros</Text>
+                        <Text style={styles.cardTitle}>Latest Records</Text>
                     </View>
 
 

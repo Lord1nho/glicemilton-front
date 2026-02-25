@@ -154,20 +154,20 @@ export default function FoodSelection() {
         if (corretos === total) {
             Toast.show({
                 type: "success",
-                text1: `Glicemilton está muito feliz!`,
+                text1: `Glicemilton is very happy!`,
                 text2: `+${ptsTotalPergunta} pontos!`,
             });
         } else if (ptsTotalPergunta >= 0) {
             Toast.show({
                 type: "success",
-                text1: `Boas escolhas, mas pode melhorar! +${ptsTotalPergunta}`,
+                text1: `Good choices, but you can improve! +${ptsTotalPergunta}`,
                 text2: `+${ptsTotalPergunta} pontos!`
             });
         } else {
             Toast.show({
                 type: "error",
-                text1: `Tente novamente!`,
-                text2: `Glicemilton prefere alimentos saudáveis!`
+                text1: `Try again!`,
+                text2: `Glicemilton prefers healthy foods!`
             });
         }
 
@@ -232,7 +232,7 @@ export default function FoodSelection() {
                             if (!confirmed) {
                                 submitChoice();
                             } else {
-                                console.log("Próxima pergunta");
+                                console.log("Next question");
                                 setNrPergunta(prevState => prevState + 1);
                                 setFoods([])
                                 setSelected([]);
@@ -242,7 +242,7 @@ export default function FoodSelection() {
                         }}
                     >
                         <Text style={styles.buttonText}>
-                            {confirmed ? "Próxima pergunta" : "Confirmar escolha"}
+                            {confirmed ? "Next question" : "Confirm choice"}
                         </Text>
                     </TouchableOpacity>
                 </View>

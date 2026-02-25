@@ -19,7 +19,7 @@ type Cuidados = {
     data: string | null;
 };
 
-export default function EscudoProtetor() {
+export default function ShieldProtetor() {
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [cuidados, setCuidados] = useState<Cuidados[]>([]);
 
@@ -46,7 +46,7 @@ export default function EscudoProtetor() {
 
        Toast.show({
            type: "success",
-           text1: "Cuidado diário concluído! Continue assim!",
+           text1: "Daily care completed! Keep it up!",
        });
 
         carregarCuidados();
@@ -105,7 +105,7 @@ export default function EscudoProtetor() {
 
                 {/* HEADER */}
                 <View style={styles.header}>
-                    <Text style={styles.title}>Complete as dicas de cuidados diários</Text>
+                    <Text style={styles.title}>Complete the daily care tips</Text>
                 </View>
 
                 {/* CARD DE PROGRESSO */}
@@ -117,15 +117,15 @@ export default function EscudoProtetor() {
                         <Shield color="#fff" size={28} />
                     </View>
 
-                    <Text style={styles.progressTitle}>Nível de Proteção: {progresso}%</Text>
+                    <Text style={styles.progressTitle}>Protection Level: {progresso}%</Text>
                     <Text style={styles.progressSubtitle}>
                         {progresso === 0
                             ? "Sem escudo! Comece a se proteger!"
                             : progresso < 50
-                                ? "Proteção inicial!"
+                                ? "Initial protection!"
                                 : progresso < 100
-                                    ? "Quase lá! Continue!"
-                                    : "Escudo máximo ativado!"}
+                                    ? "Almost there! Keep going!"
+                                    : "Maximum shield activated!"}
                     </Text>
 
                     <View style={styles.progressBarBackground}>
@@ -136,7 +136,7 @@ export default function EscudoProtetor() {
                 </LinearGradient>
 
                 {/* CUIDADOS */}
-                <Text style={styles.sectionTitle}>Cuidados de Hoje</Text>
+                <Text style={styles.sectionTitle}>Today&apos;s Care</Text>
                 {
                     cuidados.map((cuidado: Cuidados) => (
                         <CareCard
@@ -182,7 +182,7 @@ function CareCard({
             <View style={{ flex: 1 }}>
                 <Text style={[styles.cardTitle, concluido && styles.cardTitleDisabled]}>{title}</Text>
                 <Text style={styles.cardDescription}>{description}</Text>
-                {concluido ? (<Text style={styles.textProtetcionAtivacted}>✅ Proteção ativada!</Text>) : (
+                {concluido ? (<Text style={styles.textProtetcionAtivacted}>✅ Protection activated!</Text>) : (
                     <TouchableOpacity
                         style={[
                             styles.cardButton,
@@ -193,7 +193,7 @@ function CareCard({
                     >
                         <Shield color="#fff" size={14} />
                         <Text style={styles.cardButtonText}>
-                            {concluido ? "Concluído" : "Concluir"}
+                            {concluido ? "Completed" : "Complete"}
                         </Text>
                     </TouchableOpacity>
                 )}

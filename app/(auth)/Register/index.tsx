@@ -15,7 +15,7 @@ export default function RegisterScreen() {
 
     async function handleRegister() {
         if (!email || !password || !name) {
-            Alert.alert("Erro", "Preencha todos os campos");
+            Alert.alert("Erro", "Fill in all fields");
             return;
         }
 
@@ -33,17 +33,17 @@ export default function RegisterScreen() {
             });
 
             if (error) {
-                Alert.alert("Erro ao cadastrar", error.message);
+                Alert.alert("Sign-up error", error.message);
                 return;
             }
 
             Alert.alert(
-                "Conta criada 🎉"
+                "Account created 🎉"
             );
 
             router.replace("/Login"); // ou a rota que você quiser
         } catch (err) {
-            Alert.alert("Erro inesperado", "Tente novamente");
+            Alert.alert("Unexpected error", "Try again");
         } finally {
             setLoading(false);
         }
@@ -57,9 +57,9 @@ export default function RegisterScreen() {
         >
             <View style={styles.card}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>Bem-vindo 👋</Text>
+                    <Text style={styles.title}>Welcome 👋</Text>
                     <Text style={styles.subtitle}>
-                        Cadastre para cuidar do Glicemilton!
+                        Sign up to care for Glicemilton!
                     </Text>
                 </View>
 
@@ -67,7 +67,7 @@ export default function RegisterScreen() {
                 <View style={styles.inputWrapper}>
                     <User color="#64748b" size={20} />
                     <TextInput
-                        placeholder="Nome"
+                        placeholder="Name"
                         placeholderTextColor="#94a3b8"
                         style={styles.input}
                         value={name}
@@ -93,7 +93,7 @@ export default function RegisterScreen() {
                 <View style={styles.inputWrapper}>
                     <Lock color="#64748b" size={20} />
                     <TextInput
-                        placeholder="Senha"
+                        placeholder="Password"
                         placeholderTextColor="#94a3b8"
                         style={styles.input}
                         secureTextEntry
@@ -109,7 +109,7 @@ export default function RegisterScreen() {
                     disabled={loading}
                 >
                     <Text style={styles.loginButtonText}>
-                        {loading ? "Cadastrando..." : "Cadastrar"}
+                        {loading ? "Signing up..." : "Sign up"}
                     </Text>
                 </TouchableOpacity>
 
@@ -119,7 +119,7 @@ export default function RegisterScreen() {
                     style={styles.registerButton}
                     onPress={() => router.back()}
                 >
-                    <Text style={styles.registerButtonText}>Voltar</Text>
+                    <Text style={styles.registerButtonText}>Back</Text>
                 </TouchableOpacity>
             </View>
         </ImageBackground>

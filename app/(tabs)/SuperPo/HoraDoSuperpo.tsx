@@ -91,7 +91,7 @@ export default function HoraDoSuperpo() {
         if (!medicamento.trim()) {
             Toast.show({
                 type: "info",
-                text1: "É necessário digitar o medicamento",
+                text1: "You need to enter a medication name",
             });
             return;
         }
@@ -114,12 +114,12 @@ export default function HoraDoSuperpo() {
         if (error) {
             Toast.show({
                 type: "error",
-                text1: "Erro ao inserir medicação",
+                text1: "Error adding medication",
             });
         } else {
             Toast.show({
                 type: "success",
-                text1: "Medicação adicionada!",
+                text1: "Medication adicionada!",
             });
             carregarMedicamentos(); // recarrega lista
         }
@@ -141,13 +141,13 @@ export default function HoraDoSuperpo() {
             if (error.code === "23505") {
                 Toast.show({
                     type: "error",
-                    text1: "Erro ao marcar medicação",
+                    text1: "Error marking medication",
                 });
                 return;
             }
             Toast.show({
                 type: "error",
-                text1: "Tomei a Medicação!",
+                text1: "Tomei a Medication!",
             });
             console.error("❌ Erro ao marcar uso:", error);
             return;
@@ -155,7 +155,7 @@ export default function HoraDoSuperpo() {
 
         Toast.show({
             type: "success",
-            text1: "Tomei a Medicação!",
+            text1: "Tomei a Medication!",
         });
 
         await carregarUsosHoje(); // 👈 ATUALIZA BOTÃO
@@ -196,9 +196,9 @@ export default function HoraDoSuperpo() {
             <View style={styles.header}>
                 <Ionicons name="bug-outline" size={28} color="#FF8A00" />
                 <View>
-                    <Text style={styles.headerTitle}>Ritual da Saúde</Text>
+                    <Text style={styles.headerTitle}>Health Ritual</Text>
                     <Text style={styles.headerSubtitle}>
-                        Gerencie seus medicamentos
+                        Manage your medications
                     </Text>
                 </View>
             </View>
@@ -206,9 +206,9 @@ export default function HoraDoSuperpo() {
             {/* Card progresso */}
             <View style={styles.progressCard}>
                 <Ionicons name="medkit" size={40} color="#FF5FA2" />
-                <Text style={styles.progressTitle}>Continue seu tratamento</Text>
+                <Text style={styles.progressTitle}>Keep following your treatment</Text>
                 <Text style={styles.progressSubtitle}>
-                    {usosHoje.length} de {medicamentos.length} medicamentos tomados hoje
+                    {usosHoje.length} de {medicamentos.length} medications taken today
                 </Text>
                 <View style={styles.progressBar}>
 
@@ -225,7 +225,7 @@ export default function HoraDoSuperpo() {
             <View style={styles.sectionHeader}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                     <Ionicons name="bandage-outline" size={18} color="#000" />
-                    <Text style={styles.sectionTitle}>Medicamentos de Hoje</Text>
+                    <Text style={styles.sectionTitle}>Today&apos;s Medications</Text>
                 </View>
 
                 <TouchableOpacity
@@ -238,9 +238,9 @@ export default function HoraDoSuperpo() {
 
             {showAdd && (
                 <View style={styles.addCard}>
-                    <Text style={styles.addTitle}>Adicionar Medicamento</Text>
+                    <Text style={styles.addTitle}>Add Medication</Text>
 
-                    <Text style={styles.label}>Nome do medicamento</Text>
+                    <Text style={styles.label}>Name do medicamento</Text>
                     <TextInput
                         value={medicamento}
                         placeholder="Ex: Metformina"
@@ -248,7 +248,7 @@ export default function HoraDoSuperpo() {
                         onChangeText={setMedicamento}
                     />
 
-                    <Text style={styles.label}>Horário</Text>
+                    <Text style={styles.label}>Time</Text>
                     <View style={styles.timeInput}>
                         <TouchableOpacity
                             style={styles.timeInput}
@@ -313,7 +313,7 @@ export default function HoraDoSuperpo() {
                 <Text style={styles.newDayText}>Novo Dia</Text>
             </TouchableOpacity>
 
-            {/* Modal fake – Adicionar Medicamento */}
+            {/* Modal fake – Add Medication */}
         </ScrollView>
     );
 }

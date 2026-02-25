@@ -78,7 +78,7 @@ export default function Missao() {
             .single();
 
         if (error) {
-            console.error("Erro ao buscar missão:", error);
+            console.error("Error loading mission:", error);
             return;
         }
 
@@ -124,7 +124,7 @@ export default function Missao() {
         console.log("🟡 Resultado do insert:", { data, error });
 
         if (error) {
-            console.error("❌ Erro ao salvar resposta:", error);
+            console.error("❌ Error saving answer:", error);
             return;
         }
 
@@ -147,7 +147,7 @@ export default function Missao() {
                     {missao.titulo}
                 </Text>
                 <Text style={{ textAlign: "center", marginBottom: 12 }}>
-                    Pergunta 1 de 1
+                    Question 1 of 1
                 </Text>
 
                 {/* DESCRIÇÃO */}
@@ -213,8 +213,8 @@ export default function Missao() {
                     >
                         <Text style={{ textAlign: "center" }}>
                             {selecionada.correta
-                                ? "✔️ Resposta correta!"
-                                : ` 🚨Resposta errada.! ${selecionada.feedback}`}
+                                ? "✔️ Correct answer!"
+                                : ` 🚨Wrong answer!  ${selecionada.feedback}`}
                         </Text>
                     </View>
                 )}
@@ -225,7 +225,7 @@ export default function Missao() {
                         style={styles.backButton}
                         onPress={()=>router.back()}
                     >
-                        <Text style={styles.backText}>← Voltar</Text>
+                        <Text style={styles.backText}>← Back</Text>
                     </TouchableOpacity>
 
                     {!confirmou ? (
@@ -233,14 +233,14 @@ export default function Missao() {
                             style={styles.confirmButton}
                             onPress={confirmar}
                         >
-                            <Text style={styles.confirmText}>Confirmar</Text>
+                            <Text style={styles.confirmText}>Confirm</Text>
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
                             style={styles.confirmButton}
                             onPress={finalizar}
                         >
-                            <Text style={styles.confirmText}>Finalizar</Text>
+                            <Text style={styles.confirmText}>Finish</Text>
                         </TouchableOpacity>
                     )}
                 </View>
