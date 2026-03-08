@@ -76,12 +76,10 @@ export default function Missao() {
       `)
             .eq("id_missao", idMissao)
             .single();
-
         if (error) {
             console.error("Error loading mission:", error);
             return;
         }
-
         setMissao(data);
     }
 

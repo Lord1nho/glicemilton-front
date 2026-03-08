@@ -201,44 +201,44 @@ export default function DiarioFormiga() {
 
                         <View style={styles.moodGrid}>
                             <MoodButton
-                                estado="FELIZ"
-                                selecionado={estadoSelecionado === "FELIZ"}
+                                estado="HAPPY"
+                                selecionado={estadoSelecionado === "HAPPY"}
                                 onPress={selecionarHumor}
                             />
                             <MoodButton
-                                estado="TRANQUILO"
-                                selecionado={estadoSelecionado === "TRANQUILO"}
+                                estado="CALM"
+                                selecionado={estadoSelecionado === "CALM"}
                                 onPress={selecionarHumor}
                             />
                             <MoodButton
-                                estado="NEUTRO"
-                                selecionado={estadoSelecionado === "NEUTRO"}
+                                estado="NEUTRAL"
+                                selecionado={estadoSelecionado === "NEUTRAL"}
                                 onPress={selecionarHumor}
                             />
                             <MoodButton
-                                estado="CANSADO"
-                                selecionado={estadoSelecionado === "CANSADO"}
+                                estado="TIRED"
+                                selecionado={estadoSelecionado === "TIRED"}
                                 onPress={selecionarHumor}
                             />
 
                             <MoodButton
-                                estado="ANSIOSO"
-                                selecionado={estadoSelecionado === "ANSIOSO"}
+                                estado="ANXIOUS"
+                                selecionado={estadoSelecionado === "ANXIOUS"}
                                 onPress={selecionarHumor}
                             />
                             <MoodButton
-                                estado="TRISTE"
-                                selecionado={estadoSelecionado === "TRISTE"}
+                                estado="SAD"
+                                selecionado={estadoSelecionado === "SAD"}
                                 onPress={selecionarHumor}
                             />
                             <MoodButton
-                                estado="ESTRESSADO"
-                                selecionado={estadoSelecionado === "ESTRESSADO"}
+                                estado="STRESSED"
+                                selecionado={estadoSelecionado === "STRESSED"}
                                 onPress={selecionarHumor}
                             />
                             <MoodButton
-                                estado="DOENTE"
-                                selecionado={estadoSelecionado === "DOENTE"}
+                                estado="SICK"
+                                selecionado={estadoSelecionado === "SICK"}
                                 onPress={selecionarHumor}
                             />
                         </View>

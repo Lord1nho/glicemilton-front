@@ -119,7 +119,7 @@ export default function HoraDoSuperpo() {
         } else {
             Toast.show({
                 type: "success",
-                text1: "Medication adicionada!",
+                text1: "Added medication!",
             });
             carregarMedicamentos(); // recarrega lista
         }
