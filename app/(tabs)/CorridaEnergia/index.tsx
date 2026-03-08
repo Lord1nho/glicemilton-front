@@ -76,7 +76,7 @@ export default function EnergyScreen() {
         try {
             const { data, error } = await supabase
                 .from("atividade_fisica")
-                .select("id_atividade ,name, subtitle, emoji, points");
+                .select("id_atividade, name:name_en, subtitle:subtitle_en, emoji, points");
 
             if (error) {
                 throw error;
@@ -84,7 +84,7 @@ export default function EnergyScreen() {
 
             setActivities(data as Activity[]);
         } catch (err) {
-            console.error("Erro ao buscar atividades:", err);
+            console.error("Error while loading activities:", err);
         }
     }
 
@@ -100,7 +100,7 @@ export default function EnergyScreen() {
         if (error) {
             Toast.show({
                 type: "error",
-                text1: "Erro ao enviar",
+                text1: "Error while saving",
             });
             return;
         }
@@ -243,5 +243,4 @@ export default function EnergyScreen() {
         </Screen>
     );
 }
-
 

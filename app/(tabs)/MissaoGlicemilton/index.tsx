@@ -7,8 +7,8 @@ import {styles} from './styles';
 
 type Mission = {
     id_missao: number;
-    titulo: string;
-    descricao: string;
+    title: string;
+    description: string;
     pontos: number;
     respondida_hoje: boolean;
     acertou_hoje: boolean;
@@ -24,11 +24,11 @@ export default function Index() {
 
         const { data, error } = await supabase
             .from("vw_missao_respondida_hoje")
-            .select("*")
+            .select("id_missao, title:titulo_en, description:descricao_en, pontos, respondida_hoje, acertou_hoje")
             .eq("id_usuario", usuarioId);
 
         if (error) {
-            console.error("❌ Erro ao buscar atividades:", error);
+            console.error("❌ Error while loading missions:", error);
             return;
         }
 
@@ -53,7 +53,7 @@ export default function Index() {
                 .single();
 
             if (usuarioError || !usuario) {
-                console.log('Erro ao buscar usuarioId:', usuarioError);
+            console.log('Error while loading user id:', usuarioError);
                 return;
             }
 
@@ -114,8 +114,8 @@ export default function Index() {
                     <MissionCard
                         key={m.id_missao}
                         icon={<Backpack color="#ea580c" />}
-                        title={m.titulo}
-                        description={m.descricao}
+                        title={m.title}
+                        description={m.description}
                         points={m.pontos}
                         respondida_hoje={m.respondida_hoje}
                         onPress={() =>
@@ -157,7 +157,7 @@ function MissionCard({
                 <Text style={styles.cardDescription}>{description}</Text>
 
                 <View style={styles.cardFooter}>
-                    <Text style={styles.points}>+{points} pontos</Text>
+                    <Text style={styles.points}>+{points} points</Text>
 
 
                     <TouchableOpacity
@@ -177,5 +177,4 @@ function MissionCard({
         </View>
     );
 }
-
 
