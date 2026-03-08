@@ -6,7 +6,7 @@ export async function getFoods(): Promise<Food[]> {
     // busca saudáveis
     const { data: healthy, error: errorHealthy } = await supabase
         .from("alimentos")
-        .select("*")
+        .select("id_alimento, nome:nome_en, is_healthy, imagem_url")
         .eq("is_healthy", true);
 
     if (errorHealthy || !healthy) throw errorHealthy;
@@ -14,7 +14,7 @@ export async function getFoods(): Promise<Food[]> {
     // busca não saudáveis
     const { data: unhealthy, error: errorUnhealthy } = await supabase
         .from("alimentos")
-        .select("*")
+        .select("id_alimento, nome:nome_en, is_healthy, imagem_url")
         .eq("is_healthy", false);
 
     if (errorUnhealthy || !unhealthy) throw errorUnhealthy;

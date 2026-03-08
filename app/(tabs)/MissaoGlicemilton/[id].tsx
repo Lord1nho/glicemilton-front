@@ -8,7 +8,7 @@ import {getUsuarioId} from "@/utils/utils";
 
 type Alternativa = {
     id_alternativa: number;
-    texto: string;
+    text: string;
     correta: boolean;
     feedback: string | null; // 👈 ADICIONA ISSO
 };
@@ -21,8 +21,8 @@ type Questao = {
 
 type Missao = {
     id_missao: number;
-    titulo: string;
-    descricao: string;
+    title: string;
+    description: string;
     pontos: number;
     questao_missao: Questao[];
 };
@@ -60,28 +60,26 @@ export default function Missao() {
             .from("missao")
             .select(`
         id_missao,
-        titulo,
-        descricao,
+        title:titulo_en,
+        description:descricao_en,
         pontos,
         questao_missao (
           id_questao,
           enunciado,
           alternativa_missao (
             id_alternativa,
-            texto,
+            text:texto_en,
             correta,
-            feedback
+            feedback:feedback_en
           )
         )
       `)
             .eq("id_missao", idMissao)
             .single();
-
         if (error) {
             console.error("Error loading mission:", error);
             return;
         }
-
         setMissao(data);
     }
 
@@ -94,7 +92,7 @@ export default function Missao() {
         console.log("🟡 confirmar() chamado");
 
         if (!selecionada) {
-            console.log("🔴 Nenhuma alternativa selecionada");
+            console.log("🔴 No option selected");
             return;
         }
 
@@ -106,7 +104,7 @@ export default function Missao() {
         console.log("🟡 usuarioId antes do insert:", usuarioId);
 
         if (!usuarioId) {
-            console.log("🔴 usuarioId é null ou undefined");
+            console.log("🔴 userId is null or undefined");
             return;
         }
 
@@ -144,7 +142,7 @@ export default function Missao() {
             <View style={{ flex: 1, backgroundColor: "#e0f2fe", padding: 20 }}>
                 {/* HEADER */}
                 <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
-                    {missao.titulo}
+                    {missao.title}
                 </Text>
                 <Text style={{ textAlign: "center", marginBottom: 12 }}>
                     Question 1 of 1
@@ -159,7 +157,7 @@ export default function Missao() {
                         marginBottom: 16,
                     }}
                 >
-                    <Text style={{ textAlign: "center" }}>{missao.descricao}</Text>
+                    <Text style={{ textAlign: "center" }}>{missao.description}</Text>
                 </View>
 
                 {/* PERGUNTA */}
@@ -192,7 +190,7 @@ export default function Missao() {
                                 }}
                             >
                                 <Text>
-                                    {String.fromCharCode(65 + index)} – {alt.texto}
+                                    {String.fromCharCode(65 + index)} – {alt.text}
                                 </Text>
                             </TouchableOpacity>
                         );

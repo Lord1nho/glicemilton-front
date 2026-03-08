@@ -11,8 +11,8 @@ import {styles} from "./styles";
 
 type Cuidados = {
     id: number;
-    titulo: string;
-    descricao: string;
+    title: string;
+    description: string;
     icone: string;
     ordem: number;
     concluido: boolean;
@@ -39,7 +39,7 @@ export default function ShieldProtetor() {
         if (error) {
             Toast.show({
                 type: "error",
-                text1: "Erro ao enviar",
+                text1: "Error while saving",
             });
             return;
         }
@@ -55,7 +55,7 @@ export default function ShieldProtetor() {
     async function carregarCuidados() {
         const { data, error } = await supabase
             .from('v_cuidados_usuario')
-            .select('*');
+            .select('id, title:titulo_en, description:descricao_en, icone, ordem, concluido, data');
 
         if (error) {
             console.error(error);
@@ -147,8 +147,8 @@ export default function ShieldProtetor() {
                                     ? <CircleCheckBig color="#22c55e" size={24} />
                                     : <Droplet color="#3b82f6" />
                             }
-                            title={cuidado.titulo}
-                            description={cuidado.descricao}
+                            title={cuidado.title}
+                            description={cuidado.description}
                             onPress={()=> handleCuidados(cuidado)}
                             concluido={cuidado.concluido}
                         />

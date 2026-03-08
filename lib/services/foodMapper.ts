@@ -6,6 +6,6 @@ export function mapFoodDTO(dto: FoodDTO): Food {
         id_alimento: dto.id_alimento,
         nome: dto.nome,
         isHealthy: dto.is_healthy,
-        imageUrl: dto.image_url,
+        imageUrl: dto.imagem_url,
     };
 }
