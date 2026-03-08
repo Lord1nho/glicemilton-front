@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView, TouchableOpacity, Pressable, Alert, ActivityIndicator} from "react-native";
+import {View, Text, ScrollView, TouchableOpacity, Pressable, Alert, ActivityIndicator} from "react-native";
 import {BarChart2, CheckCircle, Heart} from "lucide-react-native";
 import {supabase} from "@/lib/supabase";
 import {useCallback, useEffect, useMemo, useState} from "react";
@@ -9,7 +9,7 @@ import {MOOD_MESSAGES, MOOD_STATES, MoodState} from "@/app/components/DiarioForm
 import {styles} from './styles';
 
 
-export default function DiarioFormiga() {
+export default function Index() {
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [estadoSelecionado, setEstadoSelecionado] = useState<MoodState | null>(null);
     const [jaRegistradoHoje, setJaRegistradoHoje] = useState(false);

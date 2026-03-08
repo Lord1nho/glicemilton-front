@@ -27,7 +27,7 @@ type usoHoje = {
     data_hora: string;
 }
 
-export default function HoraDoSuperpo() {
+export default function Index() {
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [showAdd, setShowAdd] = useState(false);
     const [medicamento, setMedicamento] = useState('')

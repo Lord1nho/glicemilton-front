@@ -89,7 +89,7 @@ const classificarGlicemia = (
     return 'normal';
 };
 
-export default function RadarAcucar() {
+export default function Index() {
 
     const [usuarioId, setUsuarioId] = useState<number | null>(null);
     const [valueGlicemy, setValueGlicemy] = useState('');
