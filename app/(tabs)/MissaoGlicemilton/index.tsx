@@ -89,7 +89,7 @@ export default function Index() {
             <View style={styles.centerCard}>
                 <BookOpen color="#2563eb" size={32} />
 
-                <Text style={styles.centerTitle}>Centro de Missions</Text>
+                <Text style={styles.centerTitle}>Missions Center</Text>
                 <Text style={styles.centerSubtitle}>
                     Help Glicemilton solve everyday situations!
                 </Text>
@@ -97,7 +97,7 @@ export default function Index() {
                 <View style={styles.stats}>
                     <View style={styles.statItem}>
                         <Text style={styles.statValue}>{pontuacaoMissoes}</Text>
-                        <Text style={styles.statLabel}>Pontos</Text>
+                        <Text style={styles.statLabel}>Points</Text>
                     </View>
 
                     <View style={styles.statItem}>
@@ -108,7 +108,7 @@ export default function Index() {
             </View>
 
             {/* MISSÕES */}
-            <Text style={styles.sectionTitle}>Missions Disponíveis</Text>
+            <Text style={styles.sectionTitle}>Available Missions</Text>
             {
                 missao.map(m => (
                     <MissionCard

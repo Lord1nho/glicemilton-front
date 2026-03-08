@@ -240,7 +240,8 @@ export default function HoraDoSuperpo() {
                 <View style={styles.addCard}>
                     <Text style={styles.addTitle}>Add Medication</Text>
 
-                    <Text style={styles.label}>Name do medicamento</Text>
+                    <Text style={styles.label}>
+                        Name of the medicine</Text>
                     <TextInput
                         value={medicamento}
                         placeholder="Ex: Metformina"
@@ -280,14 +281,14 @@ export default function HoraDoSuperpo() {
                     </View>
 
                     <TouchableOpacity style={styles.addConfirmButton} onPress={inserirMedicamento}>
-                        <Text style={styles.addConfirmText}>Adicionar</Text>
+                        <Text style={styles.addConfirmText}>Add</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         style={styles.cancelButton}
                         onPress={() => setShowAdd(false)}
                     >
-                        <Text style={styles.cancelText}>Cancelar</Text>
+                        <Text style={styles.cancelText}>Cancel</Text>
                     </TouchableOpacity>
                 </View>
             )}
@@ -306,12 +307,6 @@ export default function HoraDoSuperpo() {
                     />
                 );
             })}
-
-            {/* Novo dia */}
-            <TouchableOpacity style={styles.newDayButton}>
-                <Ionicons name="sunny-outline" size={16} color="#000" />
-                <Text style={styles.newDayText}>Novo Dia</Text>
-            </TouchableOpacity>
 
             {/* Modal fake – Add Medication */}
         </ScrollView>

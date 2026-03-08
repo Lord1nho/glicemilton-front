@@ -214,17 +214,17 @@ export default function RadarAcucar() {
                     const config = {
 
                         baixa: {
-                            title: 'Glicemia Baixa',
+                            title: 'Low Glicemy',
                             subtitle: 'Your blood glucose is below the ideal range. Consume a quick sugar source, such as juice or glucose, and avoid physical effort until you feel better.',
                             color: '#FF9500',
                         },
                         normal: {
-                            title: 'Glicemia Normal',
+                            title: 'Normal Glicemy',
                             subtitle: 'Your blood glucose is within the ideal range. Keep a balanced diet and continue your care routine.',
                             color: '#34C759',
                         },
                         alta: {
-                            title: 'Glicemia Alta',
+                            title: 'High Glicemy',
                             subtitle: 'Your blood glucose is above the recommended range. Stay hydrated, follow your medication correctly, and seek professional guidance if needed.',
                             color: '#FF3B30',
                         },
@@ -265,10 +265,10 @@ export default function RadarAcucar() {
                 <View style={styles.card}>
                     <View style={styles.cardTitleRow}>
                         <Ionicons name="pulse-outline" size={18} color="#000" />
-                        <Text style={styles.cardTitle}>Registrar Glicemia</Text>
+                        <Text style={styles.cardTitle}>Blood Glucose Recorder</Text>
                     </View>
 
-                    <Text style={styles.label}>Valor (mg/dL)</Text>
+                    <Text style={styles.label}>Value (mg/dL)</Text>
                     <TextInput
                         placeholder="Ex: 95"
                         placeholderTextColor="#999"
@@ -289,9 +289,9 @@ export default function RadarAcucar() {
                             style={styles.picker}
                             dropdownIconColor="#666"
                         >
-                            <Picker.Item label="Em jejum" value={1} />
+                            <Picker.Item label="Fasting" value={1} />
                             <Picker.Item label="After meal" value={2} />
-                            <Picker.Item label="Antes de dormir" value={3} />
+                            <Picker.Item label="Before bed" value={3} />
                         </Picker>
                     </View>
 
@@ -309,7 +309,7 @@ export default function RadarAcucar() {
                     </View>
 
                     <View style={styles.rangeRow}>
-                        <Text style={styles.rangeLabel}>Jejum:</Text>
+                        <Text style={styles.rangeLabel}>Fasting:</Text>
                         <Text style={styles.rangeValue}>70-99 mg/dL</Text>
                     </View>
 
@@ -319,7 +319,7 @@ export default function RadarAcucar() {
                     </View>
 
                     <View style={styles.rangeRow}>
-                        <Text style={styles.rangeLabel}>Antes de dormir:</Text>
+                        <Text style={styles.rangeLabel}>Before bed:</Text>
                         <Text style={styles.rangeValue}>100-140 mg/dL</Text>
                     </View>
                 </View>

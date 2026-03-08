@@ -39,7 +39,7 @@ export default function FinalResultModal({ visible, score, onRestart }: Props) {
 
                     <Text style={styles.title}>Congratulations!</Text>
                     <Text style={styles.subtitle}>
-                        Você terminou o Snack Challenge!
+                        You finished the Snack Challenge!
                     </Text>
 
                     <View style={styles.scoreBox}>

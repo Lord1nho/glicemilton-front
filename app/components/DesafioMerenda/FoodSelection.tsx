@@ -189,9 +189,9 @@ export default function FoodSelection() {
                     setPontos(0);
                 }}/>
                 <Text style={{ fontSize: 16 }}>
-                   🏆 Pontos: {pontos}
+                   🏆 Points: {pontos}
                 </Text>
-                <Text style={styles.questionText}>Pergunta {nrPergunta} de 5</Text>
+                <Text style={styles.questionText}>Question {nrPergunta} of 5</Text>
             </View>
             <View style={styles.container}>
                 {loading ? (

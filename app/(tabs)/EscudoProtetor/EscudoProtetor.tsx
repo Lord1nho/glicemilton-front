@@ -120,7 +120,8 @@ export default function ShieldProtetor() {
                     <Text style={styles.progressTitle}>Protection Level: {progresso}%</Text>
                     <Text style={styles.progressSubtitle}>
                         {progresso === 0
-                            ? "Sem escudo! Comece a se proteger!"
+                            ? "\n" +
+                            "No shield! Start protecting yourself!"
                             : progresso < 50
                                 ? "Initial protection!"
                                 : progresso < 100
@@ -132,7 +133,7 @@ export default function ShieldProtetor() {
                         <View style={[styles.progressBarFill, { width: `${progresso}%` }]} />
                     </View>
 
-                    <Text style={styles.progressFooter}>{getCuidadosFeitos(cuidados)} de {cuidados.length} cuidados completos</Text>
+                    <Text style={styles.progressFooter}>{getCuidadosFeitos(cuidados)} of {cuidados.length} complete care</Text>
                 </LinearGradient>
 
                 {/* CUIDADOS */}

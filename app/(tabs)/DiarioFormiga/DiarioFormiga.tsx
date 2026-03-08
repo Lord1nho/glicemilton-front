@@ -360,7 +360,7 @@ export function MoodDoneCard() {
     return (
         <View style={styles.doneCard}>
             <CheckCircle size={36} color="#2E7D32" />
-            <Text style={styles.doneTitle}>Registro de hoje completo!</Text>
+            <Text style={styles.doneTitle}>Today's registry complete!</Text>
             <Text style={styles.doneSubtitle}>
                 Come back tomorrow to log how you are feeling!
             </Text>
